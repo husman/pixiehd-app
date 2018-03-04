@@ -1,0 +1,158 @@
+@import "../../node_modules/bulma/bulma";
+
+body, html {
+  background-color: #E1E1E1;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  line-height: 0;
+}
+
+header {
+  padding: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.OT_subscriber {
+  margin-top: 20px;
+  width: 100% !important;
+  height: 200px !important;
+  min-height: 150px !important;
+  border: 1px solid #0f0;
+}
+
+.OT_publisher {
+  width: 100% !important;
+  height: 200px !important;
+  min-height: 150px !important;
+  border: 1px solid #f00;
+}
+
+.error {
+  color: red;
+}
+
+.tools-panel {
+  background-color: #ffffff;
+  padding: 5px;
+  border: 1px solid #777;
+  margin-left: 15px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.tool-item {
+  border: 1px solid #777;
+  overflow: hidden;
+  width: 26px;
+  height: 26px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+
+  &.active {
+    border-color: #008000;
+  }
+}
+
+.tool-item {
+  .tool-item__image {
+    height: 24px;
+    padding: 1px;
+  }
+}
+
+.margin-top-xsmall {
+  margin-top: 5px;
+}
+
+.margin-bottom-xsmall {
+  margin-bottom: 5px;
+}
+
+.margin-left-xsmall {
+  margin-left: 5px;
+}
+
+.margin-right-xsmall {
+  margin-top: 5px;
+}
+
+.margin-top-small {
+  margin-top: 10px;
+}
+
+.margin-bottom-small {
+  margin-bottom: 10px;
+}
+
+.margin-left-small {
+  margin-left: 10px;
+}
+
+.margin-right-small {
+  margin-top: 10px;
+}
+
+.drawArea {
+  width: 100%;
+  height: 100% !important;
+  border: 1px solid black;
+  cursor: crosshair;
+  background-color: #fff;
+  box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.path {
+  fill: none;
+  stroke-width: 5px;
+  stroke: black;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.drawing {
+  width: 100%;
+  height: 100%;
+}
+
+.right-panel {
+  background-color: #fff;
+  border: 1px solid #777;
+  margin-right: 15px;
+  padding: 5px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+#root, .body-container, .canvas-wrapper {
+  height: 100%;
+}
+
+.body-container {
+  .columns {
+    height: 100%;
+  }
+}
+
+.body-container {
+  .columns {
+    .column {
+      padding: 5px;
+    }
+  }
+}
+
+.OT_mute {
+  outline: none !important;
+  border: 0 !important;
+  top: 0 !important;
+}
+
+#app {
+  height: 90%;
+}

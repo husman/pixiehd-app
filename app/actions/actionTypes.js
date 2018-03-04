@@ -1,0 +1,1 @@
+export const ADD_PATH_TO_CANVAS = 'ADD_PATH_TO_CANVAS';

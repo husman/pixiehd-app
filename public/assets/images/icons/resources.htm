@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>CSc 104 FG | Class Profile | Piazza</title>
+    
+    <meta name="description" content="CSc 104 FG: Discrete Structrs 1 is a course taught at The City College of New York by ">
+    <meta name="author" content="">
+    <meta name="keywords" content="CSc 104 FG: Discrete Structrs 1, The City College of New York, ">
+
+    
+
+    <link type="text/css" rel="stylesheet" href="/css/dashboard/topbar.css?v=5027"/>
+    <link type="text/css" href="/third_party/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="/css/class_profile/style.css?v=5027"/>
+
+    <link type="text/css" rel="stylesheet" href="/css/reset.css?v=5027" />
+    <link type="text/css" rel="stylesheet" href="/css/plugins/jqModal.css?v=5027" />
+    <link type="text/css" rel="stylesheet" href="/css/plugins/tipsy.css" />
+    <link type="text/css" rel="stylesheet" href="/css/plugins/fancybox-1.3.4.css" />
+    <link type="text/css" rel="stylesheet" href="/css/plugins/jquery-ui-1.8.9/jquery-ui-1.8.9.custom.css" />
+    <link type="text/css" rel="stylesheet" href="/css/dashboard/style.css?v=5027" />
+    <link type="text/css" rel="stylesheet" href="/css/dashboard/app.css?v=5027" />
+    <link type="text/css" rel="stylesheet" href="/css/dashboard/invite.css?v=@css_js_version" />
+    <link type="text/css" rel="stylesheet" href="/css/splash/login_only.css?v=5027" />
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-21514163-1']);
+      _gaq.push(['_trackPageview']);
+
+      
+        _gaq.push(['_trackEvent', 'public_coursepage_view', 'Public']);
+      
+
+      
+        
+          _gaq.push(['_trackEvent', 'prof_teaching_coursepage_link_view', 'Public']); 
+        
+            
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <style type="text/css">
+    .modal h3 {
+      font-size: 18px;
+      line-height: 27px;
+    }
+    .modal p {
+      font-size: 13px;
+    }
+  </style>
+  <body>
+    <div class="pageOverlay"></div>
+    <div id="PageAlert"></div>
+
+    <link type="text/css" rel="stylesheet" href="/css/dashboard/topbar.css?v=5027"/>
+  <script type="text/javascript">
+    var dashboardPath = "https://piazza.com/class";
+  </script>
+
+  <div id="PageTopbar">
+    <div class="NewPostPanel_tutorial" style="display: none; width: 100%; height:100%;"></div>
+    
+      <div rel="logo" class="logo_wrapper">
+        <div id="PageLogo" onclick="PT.goToDashboard();"></div>
+      </div>
+    
+
+
+    <div class="topBar_middle">
+      
+    </div>
+    
+      <div class="topBar_right">
+        
+        <a class="login UIButton loginButton" style="color: gray" href="#">Log In</a>
+        
+        <a class="UIButton" style="margin: 2px; color: gray" href="/ccny.cuny.edu/fall2012/csc104fg">Enroll in Course</a>
+      </div>
+    <div class="topBar_right" style="display: none">
+    
+      <div class="topbar_icons_wrapper">
+        <div class="show-tipsy topbar_icons class_report" title="Class Report" onclick="PT.goToEndTermReport(); return false;" style="display: none;">
+          <div class="green-notifications">NEW!</div>
+        </div>
+        <div class="show-tipsy topbar_icons stats" title="Statistics" onclick="PT.goToStatsPage(); return false;"></div>
+        <div class="show-tipsy topbar_icons notifications" title="Notifications" onclick="PT.goToNotificationsPage(); return false;"></div>
+        <div class="global-notifications" id="local-class-notifications" style="display: none; float: right; margin-right: 0px;"></div>
+      </div>
+      <div class="topbar-account-wrapper clearFix">
+        <div id="topbar-account-container">
+          <div id="account-image-container">
+            <div class="dropdownWrapper" id="settingsWrapper">
+              <a href="#" class="toplinks_userProfile">
+                <div class="" id="settingsToggler">
+                  <span class="my-pic-noclick" style="cursor:pointer;">
+                    <div class="user_pic user_pic_gz1mauz97tt7f">
+                      <div class="white_border">
+                        <img title="User" src="https://dvngeac8rg9mb.cloudfront.net/images/dashboard/common/default_user.png" style="width:20px;height:20px">
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+        
+          <div id="account-name-container">
+        
+            <span id="account-name">My Name</span>
+            
+          </div>
+        </div>
+
+        
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+  function submitenter(myfield,e) {
+    var keycode;
+    if (window.event) keycode = window.event.keyCode;
+    else if (e) keycode = e.which;
+    else return true;
+
+    if (keycode == 13) {
+      myfield.form.submit();
+      return false;
+    } else return true;
+  }
+</script>
+
+<div id="LoginPanel" class="slidingPanel" style="display: none;">
+  <h2>Log in</h2>
+  <form id="login-form" method="post" 
+  
+  action="https://piazza.com/slider_login?from=/ccny.cuny.edu/fall2012/csc104fg/home">
+  
+    
+    <div id="caps_lock_error" class="error message" style="display: none;">Caps lock is turned on!</div>
+    <div class="formField">
+      <label for="email_field">Email</label>
+      <input tabindex="1" name="email" type="text"  id="email_field" value="" />
+    </div>
+    <div class="formField">
+      <label for="password_field">Password</label>
+      <input tabindex="2" name="password" type="password" id="password_field" onKeyPress="return submitenter(this,event)"/>
+    </div>
+    <div class="formField">
+      <input tabindex="3" id="remember" name="remember" type="checkbox" value="" class="checkbox"> <label class="bottomLine" for="remember" style="display:inline-block;">Keep me logged in</label>
+      <br/>
+      <a href="/forgot_password.html" class="bottomLine" style="font-size:12px;">Forgot your password?</a>
+    </div>
+    <div class="buttonBar">
+      <a tabindex="4" href="#" class="primary button" rel="submit" onKeyPress="return submitenter(this,event);">
+        <span>Log in</span>
+      </a>
+      <a tabindex="5" href="#" class="loginCancel" rel="cancel">
+        <span>Cancel</span>
+      </a>
+    </div>
+  </form>
+</div>
+
+    <div id="PageWrapper">
+      <div id="Page">
+        
+          <div class="no_inst_message_wrapper" onclick="location.href='/signup?mc_id=cp_1&net_id=h7nxzrz7ojd3v8'">
+            <div class="no_inst_message">
+              <a href="#">Are you a Professor or a TA? <u>Learn more</u> about Piazza for your class...</a>
+            </div>
+          </div>
+        
+        <div id="header"  class="no_inst"  >
+          <div class="header_content">
+            <div class="container">
+  <p>The City College of New York - Fall 2012</p>
+
+  <h1>CSc 104 FG: Discrete Structrs 1</h1>
+
+  
+  <div id="homepage_stats">
+  	<div class="stats">
+  		<div class="stats_icon no_posts"></div>
+  		<div class="stats_title">Number of posts: <span>5</span></div>
+  		<div class="stats_divider"></div>
+  	</div>
+    
+  	<div class="stats">
+  		<div class="stats_icon no_students"></div>
+  		<div class="stats_title">Number of students enrolled: <span>8</span></div>
+  	</div>
+    
+  </div>
+  
+
+  <div id="syllabus_container"></div>
+  <div class="public_visibility_message_wrapper req_inst">
+    <div class="public_visibility_logo"></div>
+    <span id="public_visibility_message" class="alert hide">To change visibility settings, click on your <b>Manage Class</b> tab.</span>
+  </div>
+</div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="tabbable">
+
+            <ul class="nav nav-tabs">
+              <li class="active">
+              <a id="tab_course_information" href="#course_information" data-toggle="tab">
+                Course Information
+              </a>
+              </li>
+              
+              <li>
+              <a id="tab_staff" href="#staff" data-toggle="tab">
+                Staff
+              </a>
+              </li>
+              
+              <li>
+              <a id="tab_resources" href="#resources" data-toggle="tab">
+                Resources
+              </a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div id="course_information" class="active tab-pane span12">
+                <div class="row course_information">
+                  <div class="span6">
+
+                    <div class="section_description row section">
+                      <div class="header span6">
+                        <div class="req_inst">
+                          <button class="btn_cancel btn right edit" style="margin-left: 5px">
+                            <i class="icon-remove-circle"></i>&nbsp;&nbsp;Cancel
+                          </button>
+                          <button class="btn_edit btn right view">
+                            <i class="icon-pencil"></i>&nbsp;&nbsp;Edit
+                          </button>
+                          <button class="btn_save btn btn-primary right edit">
+                            <i class="icon-ok-circle icon-white"></i>&nbsp;&nbsp;Save
+                          </button>
+                          <a href="#" class="desc_cancel"></a>
+                        </div>
+                        <h2>Description</h2>
+                      </div>
+                      <p><noscript></noscript></p>
+
+                      <div class="span6">
+                        <div class="description">
+                          <div class="view">
+                          </div>
+                          <div class="edit">
+                            <textarea></textarea>
+                          </div>
+                        </div>
+
+                        <div class="tutorial hide alert view req_inst">
+                          <h4 class="alert-heading">
+                            Add a Course Description
+                          </h4>
+                          Click the Edit button to add a
+                          course description.
+                        </div>
+
+                        <div class="tutorial hide alert alert-info req_student">
+                          <h4 class="alert-heading">
+                            No description, yet.
+                            Stay tuned!
+                          </h4>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="section_general_information row section">
+                      <div class="header span6">
+                        <div class="req_inst">
+                          <button class="btn_cancel btn right edit" style="margin-left: 5px">
+                            <i class="icon-remove-circle"></i>&nbsp;&nbsp;Cancel
+                          </button>
+                          <button class="btn_edit btn right view">
+                            <i class="icon-pencil"></i>&nbsp;&nbsp;Edit
+                          </button>
+                          <button class="btn_save btn btn-primary right edit">
+                            <i class="icon-ok-circle icon-white"></i>&nbsp;&nbsp;Save
+                          </button>
+                          <a href="#" class="gi_cancel"></a>
+                        </div>
+                        <h2>General Information</h2>
+                      </div>
+
+                      <div class="span6">
+                        <table>
+                          <tbody>
+                            <tr valign="top" class="add_row">
+                              <td class="span3">
+                                <span class="edit">
+                                  <input class="span2 input-label" placeholder="Label, e.g. Lecture Location or Course Mailing List">
+                                </span>
+                              </td>
+                              <td class="span3">
+                                <div class="edit">
+                                  <textarea class="span3 input-text" placeholder="Details go here"></textarea>
+                                </div>
+                              </td>
+                              <td class="span2"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="tutorial hide alert view req_inst">
+                          <h4 class="alert-heading">
+                            Edit Course Information
+                          </h4>
+                          <p>Click the Edit button to add course information.</p>
+                          <p>Some Ideas:</p>
+                          <ul>
+                            <li>Lecture Time</li>
+                            <li>Lecture Location</li>
+                          </ul>
+                        </div>
+
+                        <div class="tutorial hide alert alert-info req_student">
+                          <h4 class="alert-heading">
+                            No information, yet.
+                            Stay tuned!
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="span6">
+                    <div class="section_announcements row section">
+                      <div class="header span6">
+                        <div class="req_inst">
+                          <button class="btn_add btn right">
+                            <i class="icon-plus"></i>&nbsp;&nbsp;Add
+                          </button>
+                        </div>
+                        <h2>Announcements</h2>
+                        <a href="#" class="show_announcements all hidden">show all</a>
+                        <a href="#" class="show_announcements recent hide hidden">show recent</a>
+                      </div>
+                      <div class="span6">
+                        <div id="public-announcements-alert" class="hide alert alert-info">
+                          <h4 class="alert-heading">
+                            Announcements are not public for this course.
+                          </h4>
+                        </div>
+                        <div class="announcements"></div>
+                        <div class="tutorial hide alert view req_inst">
+                          <h4 class="alert-heading">
+                            Add an Announcement
+                          </h4>
+                          Click the Add
+                          button to add an announcement.
+                        </div>
+
+                        <div class="tutorial hide alert alert-info req_student">
+                          <h4 class="alert-heading">
+                            No announcements, yet.
+                            Stay tuned!
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane" id="staff">
+                <div class="req_inst">
+                  <button class="btn_edit view btn right">
+                    <i class="icon-edit"></i>&nbsp;&nbsp;Edit
+                  </button>
+                  <button class="btn_save edit btn right">
+                    <i class="icon-check"></i>&nbsp;&nbsp;Save
+                  </button>
+                </div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="span3"></th>
+                      <th class="span3">Name</th>
+                      <th class="span3">Email</th>
+                      <th class="span3">Office Hours</th>
+                    </tr>
+                  </thead>
+                  <tbody class="instructors">
+                    
+                      <tr>
+                        <td></td>
+                        <td>Fazlul Shahriar</td>
+                        <td></td>
+                        <td>
+                          
+                        </td>
+                      </tr>
+                    
+                  </tbody>
+                </table>
+
+                <div class="tutorial hide alert alert-info">
+                  <h4 class="alert-heading">
+                    No instructors have been added to this course, yet.
+                    Stay tuned!
+                  </h4>
+                </div>
+              </div>
+
+              <div class="tab-pane" id="resources">
+                <div style="padding: 2px 8px" class="clearFix">
+                  <div class="finish_edit_resource_sections_alert alert req_inst hide" style="float: left; margin-bottom: 0px; margin-left: -8px; width: 720px; text-align: center;"><b>Your changes were successfully saved!</b></div>
+                  <div class="edit_resource_sections_alert alert req_inst hide" style="float: left; margin-bottom: 0px; margin-left: -8px;">Want to associate dates with your resources? Make sure to enter a <b>Date Title</b>, like "Lecture Date."</div>
+                  <button id="edit_resource_sections" class="btn_edit_sections btn btn-primary right btn-small req_inst" style="margin-bottom:10px">
+                    <i class="icon-pencil icon-white"></i> Edit Resource Sections
+                  </button>
+                  <button id="save_resource_sections" class="btn_save_sections hide btn btn-primary right btn-small" style="margin-bottom:10px">
+                    <i class="icon-check icon-white"></i>&nbsp;&nbsp;Save Changes
+                  </button>
+                </div>
+                <div class="resource_options_section hide">
+                  <table class="options_table table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Section Title</th>
+                        <th style="width:80px; text-align:center;">Add a Date?</th>
+                        <th style="width:210px;">Date Title</th>
+                        <th style="width:75px;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+
+                  <div style="margin-bottom: 100px;">
+                    <div class="edit_resource_sections_alert alert req_inst hide" style="float: left; margin-bottom: 0px;">Need to add a new section? Enter a <b>Section Title</b>. You can configure the section before saving it.</div>
+                    <div style="float: right; margin-bottom: 10px; margin-top: 5px;">
+                      <input class="section_name span2 input-label" type="text" placeholder="Add Section Title" style="margin-bottom:0px; width: 200px;"/>
+                      <button class="btn_add_section btn btn-small btn-primary">Add Section</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="resource_sections_content">
+                </div>
+              </div>
+
+<!-- project teams -->
+
+              <div class="tab-pane" id="teams">
+                <a href="">Check out project teams in the dashboard!</a>
+              </div>
+
+            </div>
+          </div>
+
+          <hr/>
+          <footer><p>Copyright &copy; 2012 <a href="/signup">Piazza Technologies</a>, Inc. All Rights Reserved.</p></footer>
+
+        </div>
+      </div>
+    </div>
+
+<!--modal windows-->
+    <!--Deleting announcements from the homepage-->
+    <div class="modal hide" id="deleteAnnouncement" style="width: 670px; margin-left:-335px; margin-top: -90px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Are you sure you want to delete this annoucement?</h3>
+      </div>
+      <div class="modal-body">
+        <p>You have the option of deleting this announcement from just the course homepage or deleting this announcement from the course homepage and Q&A feed. What would you like to do?</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Don't delete</a>
+        <a href="#" class="homepage btn btn-primary">Delete from course homepage</a>
+        <a href="#" class="dashboard btn btn-primary">Delete from course homepage and Q&A feed</a>
+      </div>
+    </div>
+    <!--Cancelling after modifying content for description-->
+    <div class="modal hide cancel_changes" id="desc_cancelChanges" style="width: 440px; margin-left:-220px; margin-top: -80px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Are you sure you want to cancel?</h3>
+      </div>
+      <div class="modal-body">
+        <p>You'll lose everything you typed, plus all the time it took to type it...</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">No, take me back!</a>
+        <a href="#" class="btn btn-primary">Yes, delete my edit</a>
+      </div>
+    </div>    
+    <!--Cancelling after modifying content for course information-->
+    <div class="modal hide cancel_changes" id="gi_cancelChanges" style="width: 440px; margin-left:-220px; margin-top: -80px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Are you sure you want to cancel?</h3>
+      </div>
+      <div class="modal-body">
+        <p>You'll lose everything you typed, plus all the time it took to type it...</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">No, take me back!</a>
+        <a href="#" class="btn btn-primary">Yes, delete my edit</a>
+      </div>
+    </div> 
+
+    <!--Adding links-->
+
+    <script id="tpl_alert" type="text/html">
+      <div class="alert">
+  <a class="close" data-dismiss="alert">&#215;</a>
+  <strong>{{title}}</strong>: {{text}}
+</div>
+    </script>
+    <script id="tpl_network_dropdown" type="text/html">
+      <div id="current-class-container">
+  <div id="classes-content-wrapper" class="clearFix">
+    <div id="current-class">
+      <span style="cursor:pointer;">
+        <span id="current-class-title"
+              class="course-number">{{course_number}}</span>
+        <span class="course-number-arrow">&#9662;</span>
+      </span>
+    </div>
+
+
+    <div class="dropdownWrapper leftBarItem" id="myClassesWrapper">
+      <div class="dropdownToggler clearFix active" id="myClassesToggler"
+           style="position:absolute; top:0px;right:-5px;">
+      </div>
+      <div class="dropdownMenu" id="myClassesMenu"
+           style="overflow-x: auto; overflow-y: auto; display: none; ">
+        <ul id="myClassesMenuItems" class="ui-sortable" style="">
+
+          <a href="/signup/piazza.com">
+            <li class="add-new-class">+&nbsp;Add Another Class</li>
+          </a>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+    </script>
+    <script id="tpl_network_dropdown_item" type="text/html">
+      <li class="classDropdownItem sortable">
+  <div class="main">
+    <strong>{{course_number}}</strong>
+    {{^is_active}}(inactive) {{/is_active}}
+    <span style="color:#AAA">[{{term}}{{^term}}other{{/term}}]</span>:
+    {{name}}
+  </div>
+</li>
+    </script>
+    <script id="tpl_syllabus" type="text/html">
+      <div id="syllabus">
+  <div class="btn-group" id="syllabus_stud">
+    <a class="btn_download btn btn-large"
+      href="/class_profile/syllabus/{{id}}">
+      Syllabus&nbsp;&nbsp;<i class="icon-download-alt"></i>
+    </a>
+  </div>
+  
+  <div class="btn-group" id="syllabus_prof">
+      <a class="btn_download btn btn-large" target="_blank"
+        href="/class_profile/syllabus/{{id}}">
+        Syllabus&nbsp;&nbsp;<i class="icon-download-alt"></i>
+      </a>
+      <button type="button" id="syllabus_edit" class="view btn btn-large">
+        <i class="ajax_loader"></i>
+        <i class="icon-pencil"></i>
+      </button>
+    <button type="button" id="syllabus_delete" class="view btn btn-large"
+                data-original-title="Are you sure?"
+                data-content="
+      <button class='yes btn btn-primary'>Yes</button>
+      <button class='no btn'>No</button>">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+  <div>
+    <a class="btn_add btn btn-large" id="syllabus_add">
+      <i class="icon-plus"></i>&nbsp;&nbsp;Add Syllabus
+    </a>
+  </div>
+</div>
+
+    </script>
+    <script id="tpl_general_information" type="text/html">
+      <tr class="clearFix" valign="top">
+
+  <td class="span3 header_text">
+    <span class="view label">{{label}}</span>
+    <span class="edit">
+      <input class="span2 input-label" value="{{label}}" placeholder="Label">
+    </span>
+  </td>
+
+  <td class="span3 body_text">
+    <div class="view">
+      {{{text_as_html}}}
+    </div>
+    <div class="edit">
+      <textarea class="span3 input-text" placeholder="Information goes here">{{text}}</textarea>
+    </div>
+  </td>
+
+  <td class="edit general_information_remove">
+    <span class="btn_link btn_remove_row">
+      <i class="icon-remove"></i> <a>Remove Row</a>
+    </span>
+    <!--<button class=" btn btn-small">-->
+      <!--<i class="icon-remove"></i>Remove-->
+    <!--</button>-->
+  </td>
+
+</tr>
+
+    </script>
+    <script id="tpl_announcement" type="text/html">
+      <div id={{id}} nr={{nr}} class="announcement well">
+  <div class="announcement_header clearfix">
+	  <div class="announcement_actions req_inst">
+	  	<button class="btn_cancel btn right view" style="margin-left: 5px">
+			<i class="icon-trash"></i>&nbsp;&nbsp;Delete
+		</button>
+		<button class="btn_edit btn right view">
+	    	<i class="icon-pencil"></i>&nbsp;&nbsp;Edit
+	    </button>
+	  </div>
+	  <div class="announcement_meta">	
+	  	<h3>{{title}}</h3>
+	  	<em>{{client_time}}</em>
+	  </div>
+  </div>
+
+  <p class="announcement_text">{{{text}}}</p>
+  <a href="#" class="view_more">View More</a>
+  <a href="#" class="view_less">View Less</a>
+  <span class="dot">&middot;</span>
+  <a href="{{url}}" target="_blank">View on Piazza</a>
+</div>
+
+    </script>
+    <script id="tpl_instructor" type="text/html">
+      <tr>
+  <td>{{{img}}}</td>
+  <td>{{name}}</td>
+  <td><a class="view" href="mailto:{{email}}">{{email}}</a>
+      <span class="edit"><input type="text" class="instructor_email" value="{{email}}"></span>
+  </td>
+  <td>
+    <table class="office_hours table table-condensed table-bordered">
+      <tr>
+        <td><strong>When?</strong></td>
+        <td class="view">{{office_hours.time}}</td>
+        <td class="edit"><input class="time" type="text" value=""></td>
+      </tr>
+      <tr>
+        <td><strong>Where?</strong></td>
+        <td class="view">{{office_hours.location}}</td>
+        <td class="edit"><input class="location" type="text" value=""></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+    </script>
+    <script id="tpl_resource_section" type="text/html">
+      <div class="resources_section" id="resource_section_{{id}}">
+  <div class="title_wrapper">
+    <h2>{{title}}</h2>
+    <div class="number_of_resources_wrapper">
+      ( <span id="number_of_resources_shown"></span> out of <span id="number_of_total_resources"></span> resources displayed ) 
+    </div>
+  </div>
+  <table class="table table-striped tablesorter table-bordered
+    {{^has_date}}not_has_date{{/has_date}}">
+    <thead>
+    <tr>
+      {{#headers}}
+      <th class="{{class}}">
+        {{text}}
+      </th>
+      {{/headers}}
+      
+
+    </tr>
+    </thead>
+    <tbody id="resource_table_body">
+    </tbody>
+  </table>
+  
+
+  
+  <div class="tutorial hide alert alert-info">
+    <h4 class="alert-heading">
+      Nothing has been added to the {{title}} section, yet.
+      Stay tuned!
+    </h4>
+  </div>
+  
+
+  <div id="public-resources-alert" class="hide alert alert-info">
+    <h4 class="alert-heading">
+      This resource section is not public for this course.
+    </h4>
+  </div>
+
+
+  <div class="section_view_links_wrapper">
+    <a href="#" id="show_more_resources" class="view_resources_link">Show all resources</a>
+    <a href="#" id="show_less_resources" class="view_resources_link">Show fewer resources</a>
+  </div>
+
+  
+
+  <div class="modal hide add_link_modal" id="add_link" style="width: 480px; margin-left:-240px; margin-top: -80px;">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+      <h3>Add a link</h3>
+    </div>
+    <div class="modal-body clearfix">
+      <div class="input_wrapper">
+        <label>Title</label>
+        <input type="text" class="link_title" placeholder="Please select a title for your link" />
+      </div>
+      <div class="input_wrapper">
+        <label>Link</label>
+        <input type="text" class="link_address" value="http://" onclick="select()" />
+      </div>
+
+      <div class="error_message" style="color: red; text-align: center; font-weight: 500; margin-top: 5px;">
+        <p class="error_text" style="display:none">An error occurred</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button data-dismiss="modal"
+        class="btn" style="margin-right: 5px;">Cancel
+      </button>
+      <button
+        class="btn_confirm_add_link btn btn-primary">Post Link
+      </button>
+    </div>
+  </div>
+</div>
+
+    </script>
+    <script id="tpl_resource" type="text/html">
+      <tr class="resource resource_row ui-state-default">
+  <td id="{{id}}">
+    <i class="ajax_loader"></i>
+    <div class="view title"><a href="#" class="resource_title">{{title}}</a></div>
+    <div class="announce_message req_inst">Click "Post a note" anytime to create a note related to this resource. (you can review its content before posting)</div>
+    <div class="edit" style="float: left;"><input class="title" type="text"/></div>
+    <div class="req_inst reorder_resource hide" id="resource_drag_field_{{id}}"></div>
+    <div class="req_inst reorder_resource_disabled hide"></div>
+  </td>
+
+  <td class="resource_date_col hide_on_drag {{^date}}not_has_date{{/date}}">
+    {{^date}}
+    <div class="req_inst placeholder_date view">click to edit date</div>
+    {{/date}}
+    <div class="view" style="text-align: center; line-height: 2">{{date}}</div>
+    <div class="edit"><input class="date" type="text" /></div>
+  </td>
+  
+  <td class="req_inst resource_action_col hide_on_drag">
+    <div class="view btn-group">
+      <button class="btn_edit btn btn-small"
+              data-original-title="Edit"
+              rel="tooltip">
+        <i class="icon-pencil"></i>&nbsp;&nbsp;Edit
+      </button>
+      <button class="btn_announce btn btn-small"
+              data-original-title="Post a note"
+              rel="tooltip">
+        <i class="icon-list-alt"></i>&nbsp;&nbsp;Post a note
+      </button>
+      <button class="btn_delete btn btn-small"
+              data-original-title="Are you sure?"
+              data-content="
+                <button class='yes btn btn-primary'>Yes</button>
+                <button class='no btn'>No</button>">
+        <i class="icon-trash"></i>&nbsp;&nbsp;Delete
+      </button>
+    </div>
+
+    <button class="edit btn_save btn btn-small">
+      <i class="icon-ok-circle"></i> Done
+    </button>
+
+  </td>
+</tr>
+    </script>
+    <script id="tpl_resource_section_options" type="text/html">
+      <tr class="ui-state-default" data-cid="{{title}}">
+	<td style="">
+    <div class="view title" style="vertical-align:bottom; margin: 5px">{{title}}
+      <div  class="req_inst reorder_resource" 
+            id="resource_drag_field_{{id}}">
+      </div>
+    </div>
+  </td>
+
+	<td style="text-align: center; vertical-align: middle;">
+    <input  class="has_date" 
+            style="margin-left:5px; margin-top:5px;" 
+            type="checkbox" 
+            {{#has_date}}checked{{/has_date}} />
+  </td>
+ 
+  <td><input  class="date_title" 
+              style="margin-bottom: 0px" 
+              type="text" 
+              {{#has_date}}value="{{date_title}}"{{/has_date}} />
+  </td>
+	
+  <td style="text-align: center;">
+    <button class="btn_delete btn btn-small"
+
+              data-original-title="Are you sure you want to delete this section?"
+              data-content="
+        <button class='yes btn btn-primary'>Yes</button>
+        <button class='no btn'>No</button>">
+        <i class="icon-trash"></i>&nbsp;&nbsp;Delete
+    </button>
+  </td>
+</tr>
+    </script>    
+
+    <script src="/javascripts/cache/class_profile.js?1352324649" type="text/javascript"></script>
+
+    <script type="text/javascript">/* Course Homepage JS controller*/
+
+var ClassProfile = Spine.Controller.sub({
+  elements: {
+    "#PageTopbar": "topbar",
+    "#Page": "page",
+    "#PageWrapper": "page_wrapper",
+    "#PageAlert": "page_alert",
+    "#header": "header",
+    "#syllabus_container": "syllabus",
+    "#course_information": "home",
+    "#staff": "staff",
+    "#resources": "resources"
+  },
+  init: function() {
+    this.set_network();
+    this.route_to_tab();
+    $('input, textarea').placeholder();
+    new AlertController({
+      el: this.page_alert
+    });
+  },
+  set_network: function() {
+    this.network  = {"school_ext":"ccny.cuny.edu","start_date":"2012-09-25T00:00:00Z","school":"The City College of New York","name":"Discrete Structrs 1","config":{"enrollment_source":"prof","reg_user_count":9,"introduce_piazza_nr":3,"resource_sections":[{"ordering":["h981uuu3llp7bk","h8nykaa0cd92w2","h8dz47gdws2pc","h7tw4k0xbg24dn","h7ny261c1745m7","h7ny1qy05bs5dj","h7ny0vb3tr44hw"],"name":"homework","date_title":"Due Date","has_date":true,"title":"Homework","visibility":true,"headers":[{"class":"title","text":"Homework"},{"class":"date","text":"Due Date"}]},{"ordering":[],"name":"general","date_title":"","has_date":false,"title":"General Resources","visibility":true,"headers":[{"class":"title","text":"General Resources"}]}],"cloned_from":"h7nxsb6r10960k","seen_message":["first_day"],"public_visibility_settings":{"resource_sections":{"homework_solutions":false,"lecture_notes":true,"homework":true,"general":true},"announcements":true},"disable_syntax":false,"tips_tricks_nr":1,"get_familiar_nr":2},"prof_hash":{"h7nse651kod3kj":1},"term":"Fall 2012","short_number":"csc104fg","office_hours":{"h7nse651kod3kj":{"location":"NAC 8/212","time":"Tu 1pm-3pm","email":""}},"topics":[],"course_description":"","enrollment":25,"anonymity":"full","id":"h7nxzrz7ojd3v8","private_posts":"yes","total_content_prof":6,"total_content_stud":3,"school_short":"the_city_college_of_new_york","course_number":"CSc 104 FG","profs":[{"photo":null,"facebook_id":null,"name":"Fazlul Shahriar","admin":true,"id":"h7nse651kod3kj","us":false}],"type":"open","school_emails":"ccny.cuny.edu","syllabus":"","user_count":9,"my_name":"CSc 104 FG: Discrete Structrs 1","status":"active","special_tags":[{"name":"homework","nr":10}],"end_date":null,"department":"","school_id":"h6on9vaom7sfn","general_information":[]};
+    //this.url      = null;
+    this.nid      = this.network.id;
+
+    this.user_type            = "public";
+    this.resource_sections    = [{"ordering":["h981uuu3llp7bk","h8nykaa0cd92w2","h8dz47gdws2pc","h7tw4k0xbg24dn","h7ny261c1745m7","h7ny1qy05bs5dj","h7ny0vb3tr44hw"],"name":"homework","date_title":"Due Date","has_date":true,"title":"Homework","visibility":true,"headers":[{"class":"title","text":"Homework"},{"class":"date","text":"Due Date"}]},{"ordering":[],"name":"general","date_title":"","has_date":false,"title":"General Resources","visibility":true,"headers":[{"class":"title","text":"General Resources"}]}];
+    this.visibility_settings  = {"resource_sections":{"homework_solutions":false,"lecture_notes":true,"homework":true,"general":true},"announcements":true};
+    this.page_section         = "resources";
+    this.staff_info           = [{"photo":null,"facebook_id":null,"name":"Fazlul Shahriar","admin":true,"id":"h7nse651kod3kj","us":false}];
+    this.resource_data        = [{"config":{"section":"homework","resource_type":"file","date":"09/04/2012"},"subject":"Homework #1","id":"h7ny0vb3tr44hw","content":"","created":"2012-09-28T23:48:55Z"},{"config":{"section":"homework","resource_type":"file","date":"09/11/2012"},"subject":"Homework #2","id":"h7ny1qy05bs5dj","content":"","created":"2012-09-28T23:49:36Z"},{"config":{"section":"homework","resource_type":"file","date":"10/02/2012"},"subject":"Homework #3","id":"h7ny261c1745m7","content":"","created":"2012-09-28T23:49:56Z"},{"config":{"section":"homework","resource_type":"file","date":"10/16/2012"},"subject":"Homework #4","id":"h7tw4k0xbg24dn","content":"","created":"2012-10-03T03:42:25Z"},{"config":{"section":"homework","resource_type":"file","date":"10/23/2012"},"subject":"Homework #5","id":"h8dz47gdws2pc","content":"","created":"2012-10-17T05:01:31Z"},{"config":{"section":"homework","resource_type":"file","date":"10/30/2012"},"subject":"Homework #6","id":"h8nykaa0cd92w2","content":"","created":"2012-10-24T04:43:43Z"},{"config":{"section":"homework","resource_type":"file","date":"11/13/2012"},"subject":"Homework #7","id":"h981uuu3llp7bk","content":"","created":"2012-11-07T06:11:19Z"}];
+    this.announcement_data    = [];
+
+    for (var i = 0; i < this.staff_info.length; i++) {
+      var staff = this.staff_info[i];
+      PA.users[staff['id']] = staff;
+    }
+
+    /* This css support allows us to hide UI elements that are normally */
+    if (this.user_type == "prof") {
+    	this.isInst = false;
+    	this.page.addClass("is_inst");
+    } else this.isInst = false;
+
+    this.init_tabs();
+    this.page.show();
+
+    this.syllabus.append(ich.tpl_syllabus(this.network));
+    PU.resizeFontToHeight(this.header.find(".container"), this.header.find("h1"), "160", "28");
+
+    this.init_syllabus();
+    this.log_class_profile_users_seen();
+  },
+  log_class_profile_users_seen: function() {
+    PA.call_pj("network.log_class_profile_users_seen", {
+      nid: this.nid
+    }, 1, (function() {}), Util.ajax_error_callback, this);
+  },
+  init_tabs: function() {
+    new CourseInformationTab({
+      el: this.home,
+      nid: this.nid,
+      network: this.network,
+      user_type: this.user_type,
+      announcement_visibility: this.visibility_settings['announcements'],
+      announcement_data: this.announcement_data
+    });
+    new ResourcesTab({
+      el: this.resources,
+      nid: this.nid,
+      user_type: this.user_type,
+      visibility: this.visibility_settings,
+      resource_section_info: this.resource_sections,
+      resource_data: this.resource_data
+    });
+    new InstructorCollectionController({
+      el: this.staff,
+      nid: this.nid,
+      instructors: this.staff_info || [],
+      office_hours: this.network.office_hours || {}
+    });
+    $('a[data-toggle="tab"]').on('shown', function(e) {
+      var route_to = e.target.hash.substr(1);
+      if (route_to == "course_information") route_to = "home"
+
+      if (window.history.pushState) window.history.pushState("object or string", "Title", route_to);
+
+      if (PA && PA.isUserNewInstructor()) { PA.log_action("course_homepage_" + route_to + "_view"); }
+    });
+  },
+  route_to_tab: function() {
+    var deepParams, tab;
+    deepParams = PU.getDeepParams();
+
+    tab = this.page_section;
+    if (typeof nottab !== "undefined" && nottab !== null) {
+      tab = "home";
+    }
+    tab = "#tab_" + tab;
+    $(tab).tab('show');    
+  },
+  init_syllabus: function() {
+    new SyllabusController({
+      el: $("#syllabus"),
+      network: this.network,
+      user_type: this.user_type
+    });
+  }
+});
+
+$(function() {
+  new ClassProfile({
+    el: $("body")
+  });
+});
+
+</script>
+    <script type="text/javascript" src="/javascripts/piazza/class_profile/project_teams.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.tipsy.js"></script>
+    <script type="text/javascript" src="/javascripts/sliding-panel.js?v=5027"></script>
+
+    <script>
+    	$(document).ready(function() {
+        /* This event is only triggered to logged in users */
+        PT.events.observe("networks_loaded", function() {
+          PT.populateDropdowns("h7nxzrz7ojd3v8");
+        });
+
+        /* Handle login errors */
+        
+        
+        /* Login slider */
+        $('.loginButton').click(function() {
+          openSlidingPanel($('#LoginPanel'));
+          $('#email_field').focus();
+        });
+
+        /* Privacy tooltip for professors */
+        $('.public_visibility_logo').mouseover(function() {
+          $('#public_visibility_message').removeClass('hide');
+          $('#public_visibility_message').delay(4500).fadeOut('slow', function() {
+            $('#public_visibility_message').addClass('hide');
+            $('#public_visibility_message').show();
+          });
+        });
+
+        var currentAnnouncementId = null;
+
+        //mode view for description
+        function desc_modeView() {
+          $('.section_description').removeClass("editing");
+          if ($('.section_description').item.text === "") alert('desc empty');//this.tutorial.removeClass("hide");
+        }
+        //mode view for general information
+        function gen_inf_modeView() {
+          $('.section_general_information').removeClass("editing");
+          if ($('.section_description').item.text === "") alert('gen inf empty'); //this.tutorial.removeClass("hide");
+        }
+        $(".section_description .btn_cancel").click(function() {
+          $('#desc_cancelChanges').modal('show');
+        });
+        $(".section_general_information .btn_cancel").click(function() {
+          $('#gi_cancelChanges').modal('show');
+        });
+        $("#desc_cancelChanges .btn-primary").click(function() {
+          $('.section_description .desc_cancel').click();
+          $('#desc_cancelChanges').modal('hide');
+        });
+        $("#gi_cancelChanges .btn-primary").click(function() {
+          $('.section_general_information .gi_cancel').click();
+          $('#gi_cancelChanges').modal('hide');
+        });
+
+        $(".announcement_header .btn_edit").live("click", function() {
+          var nr = $(this).closest(".announcement").attr("nr");
+          var url = "/class#" + "fall2012/csc104fg" + "/" + nr;
+          window.open(url);
+        });
+
+        $(".view_more").live("click", function() {
+          var announcement = $(this).closest(".announcement");
+          $(announcement).removeClass('make_short');
+          $(announcement).addClass('make_long');
+          $(announcement).removeClass('long');
+          return false;
+        });
+
+        $(".view_less").live("click", function() {
+          var announcement = $(this).closest(".announcement");
+          $(announcement).removeClass('make_long');
+          $(announcement).addClass('make_short');
+          return false;         
+        });
+        $("a.homepage").live("click", function() {
+
+          PA.call("content.unannounce", {cid: currentAnnouncementId}, null, function(data){
+            //alert(data);
+          },
+          function(err) {
+            alert(err);
+          });     
+          $('#deleteAnnouncement').modal('hide');
+          var announcement = $('#'+currentAnnouncementId);
+          $(announcement).hide();    
+        });
+        $("a.dashboard").live("click", function() {
+          PA.call_pj("content.delete", {cid: currentAnnouncementId}, null, function(data){
+            //alert(data);
+          }, 
+          function(err) {
+            alert(err);
+          }); 
+          $('#deleteAnnouncement').modal('hide');
+          var announcement = $('#'+currentAnnouncementId);
+          $(announcement).hide();         
+        });
+
+        $(".announcement_header .btn_cancel").live("click", function() {  
+          var announcement = $(this).closest(".announcement");
+          currentAnnouncementId = $(announcement).attr("id");                        
+          $('#deleteAnnouncement').modal('show');
+        });
+
+        PT.events.observe("network_change", function() {
+          $('#Page').show();
+          var newNetwork = PA.getNetwork(currentNetworkId);
+          if (newNetwork.status === 'wishlist') {
+            PT.selectedWishlist = currentNetworkId;
+            PA.load("/invite/profs", $('#Page'), function(html) {
+              // hide current view
+              $('.inviteProfs, #PageWrapper > .clearFix').remove();
+              $('.inviteProfsPageMain').parent().remove();
+              $('#Page').hide();
+              $('#PageMain .views').hide();
+              $('#PageWrapper').prepend(html);
+              // hide dropdown
+              $('.dropdownToggler').removeClass('active');
+              $('.dropdownMenu').hide();
+              if(newNetwork.email_sent) {
+                $('.inviteProfs, .inviteProfsPageMain').addClass('inviteSent');
+              }
+        
+              if(!Piazza.InviteProfs) {
+                $.getScript('js/dashboard/invite_profs_js.js', function() {
+                  Piazza.InviteProfs.init();
+                });
+              } else {
+                Piazza.InviteProfs.init();      
+              }
+            });
+            return;
+          }
+        });    		
+    	});
+
+    </script>
+
+</body>
+</html>
+
