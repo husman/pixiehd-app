@@ -28,7 +28,7 @@ const store = createStore(
 	)
 );
 
-const socket = require('socket.io-client')('http://localhost:4000', { query: `roomName=${roomName}` });
+const socket = require('socket.io-client')(window.location.host, { query: `roomName=${roomName}` });
 SocketClient.init(socket);
 window.socket = SocketClient;
 
