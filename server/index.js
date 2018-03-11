@@ -104,6 +104,26 @@ io.on('connection', (socket) => {
 			}
 		})
 	});
+
+	socket.on('canvas:object:modified', (data) => {
+		const { roomName } = socket;
+
+		wsClients[roomName].forEach(s => {
+			if (s.id !== socket.id) {
+				s.emit('canvas:object:modified', data);
+			}
+		})
+	});
+
+	socket.on('canvas:clear', () => {
+		const { roomName } = socket;
+
+		wsClients[roomName].forEach(s => {
+			if (s.id !== socket.id) {
+				s.emit('canvas:clear');
+			}
+		})
+	});
 });
 
 const PORT = process.env.PORT || 4000;

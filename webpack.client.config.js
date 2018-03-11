@@ -72,5 +72,8 @@ module.exports = {
 		host: 'localhost',
 		port: 4001,
 		headers: { 'Access-Control-Allow-Origin': '*' },
+		proxy: {
+			"/assets": "http://localhost:4001/public",
+		},
 	},
 };

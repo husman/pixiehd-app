@@ -5,7 +5,8 @@ import Canvas from './Whiteboard';
 import AssetStore from '../../lib/AssetStore';
 import { Tools } from "react-sketch/lib/index";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Widget, addResponseMessage } from 'react-chat-widget';
+import ChatBox from './ChatBox';
+import { GridList } from 'material-ui/GridList';
 
 export default class App extends React.Component {
 	_session = null;
@@ -110,6 +111,18 @@ export default class App extends React.Component {
 		const { apiKey, sessionId, token } = this.props.credentials;
 		const { error, connection, publishVideo, tool = Tools.Pencil } = this.state || {};
 
+		const styles = {
+			root: {
+				display: 'flex',
+				flexWrap: 'wrap',
+				justifyContent: 'space-around',
+			},
+			gridList: {
+				height: '100%',
+				overflowY: 'auto',
+			},
+		};
+
 		return (
 			<MuiThemeProvider>
 				<div className='body-container'>
@@ -168,41 +181,45 @@ export default class App extends React.Component {
 							/>
 						</div>
 						<div className="column">
-							<div className="right-panel">
-								<OTSession
-									apiKey={apiKey}
-									sessionId={sessionId}
-									token={token}
-									onError={this.onSessionError}
-									eventHandlers={this.sessionEventHandlers}
-									ref={this.onSessionReady}
-								>
-									<OTPublisher
-										properties={{
-											publishVideo, style: {
-												buttonDisplayMode: 'on',
-											}
-										}}
-										onPublish={this.onPublish}
-										onError={this.onPublishError}
-										eventHandlers={this.publisherEventHandlers}
-									/>
-									<OTStreams>
-										<OTSubscriber
-											properties={{ width: 100, height: 100 }}
-											onSubscribe={this.onSubscribe}
-											onError={this.onSubscribeError}
-											eventHandlers={this.subscriberEventHandlers}
+							<GridList
+								cols={1}
+								cellHeight={200}
+								padding={1}
+								style={styles.gridList}
+							>
+								<div className="right-panel">
+									<OTSession
+										apiKey={apiKey}
+										sessionId={sessionId}
+										token={token}
+										onError={this.onSessionError}
+										eventHandlers={this.sessionEventHandlers}
+										ref={this.onSessionReady}
+									>
+										<OTPublisher
+											properties={{
+												publishVideo, style: {
+													buttonDisplayMode: 'on',
+												}
+											}}
+											onPublish={this.onPublish}
+											onError={this.onPublishError}
+											eventHandlers={this.publisherEventHandlers}
 										/>
-									</OTStreams>
-								</OTSession>
-								<Widget
-									handleNewUserMessage={this.handleNewUserMessage}
-									title="My new awesome title"
-									subtitle="test haleeq"
-									profileAvatar={AssetStore.get('assets/icons/boy.svg')}
-								/>
-							</div>
+										<OTStreams>
+											<OTSubscriber
+												properties={{ width: 100, height: 100 }}
+												onSubscribe={this.onSubscribe}
+												onError={this.onSubscribeError}
+												eventHandlers={this.subscriberEventHandlers}
+											/>
+										</OTStreams>
+									</OTSession>
+								</div>
+								<div className="margin-top-small">
+									<ChatBox/>
+								</div>
+							</GridList>
 						</div>
 					</div>
 				</div>

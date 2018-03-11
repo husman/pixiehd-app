@@ -1,14 +1,20 @@
 @import "../../node_modules/bulma/bulma";
+@import "./chat";
 
 body, html {
   background-color: #E1E1E1;
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: Helvetica Neue, Helvetica, Arial, Utkal, sans-serif;
 }
 
 body {
   line-height: 0;
+}
+
+button, html, input, select, textarea {
+  font-family: sans-serif;
 }
 
 header {
@@ -131,6 +137,7 @@ header {
 
 #root, .body-container, .canvas-wrapper {
   height: 100%;
+  position: relative;
 }
 
 .body-container {
@@ -155,4 +162,17 @@ header {
 
 #app {
   height: 90%;
+}
+
+.canvas-action-buttons {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  margin: 5px;
+}
+
+.btn {
+  &:hover {
+    cursor: pointer;
+  }
 }
