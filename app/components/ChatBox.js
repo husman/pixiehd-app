@@ -1,62 +1,83 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { postChatMessage } from '../actions/chat';
+import { postChatMessage, sendChatMessage } from '../actions/chat';
 import AssetStore from "../../lib/AssetStore";
-import Avatar from 'material-ui/Avatar'
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import Avatar from 'material-ui/Avatar';
+import SocketClient from '../../lib/SocketClient';
 
 class ChatBox extends React.Component {
+	onKeyInputPress = (e) => {
+		if (e.key === 'Enter') {
+			this.onSend();
+		}
+	};
+
+	onSend = () => {
+		const text = this._input.value.trim();
+		const {
+			avatar,
+			initials,
+			onSendChatMessage,
+			userId,
+		} = this.props;
+
+		if (text) {
+			onSendChatMessage({
+				avatar,
+				initials,
+				text,
+				userId,
+			});
+
+			this.scrollChatMessagesToBottom()
+		}
+
+		this._input.value = '';
+	};
+
+	scrollChatMessagesToBottom = () => {
+		setTimeout(() => this._chatMessages.scrollTop = this._chatMessages.scrollHeight, 0);
+	};
+
+	initChat = (element) => {
+		this._chatMessages = element;
+
+		SocketClient.on('chat:message', (message) => {
+			this.props.onPostChatMessage(message);
+			this.scrollChatMessagesToBottom();
+		});
+	};
+
 	render() {
+		const {
+			messages = [],
+			userId,
+		} = this.props;
+
 		return (
 			<div className="chat">
-				<div className="chat__messages">
-					<div className="chat__message chat__message--external">
-						<div className="chat__message__avatar">
-							<Avatar
-								src={AssetStore.get('assets/images/containers/derlin_chao_avatar.png')}
-								size={28}
-							/>
-						</div>
-						<div className="chat__message__text">
-							这是一个美好的一天
-						</div>
-					</div>
+				<div
+					className="chat__messages"
+					ref={this.initChat}
+				>
+					{messages.map((message, key) => {
+						const externalClass = message.userId !== userId ? ' chat__message--external' : '';
 
-					<div className="chat__message">
-						<div className="chat__message__avatar">
-							<Avatar
-								src={AssetStore.get('assets/images/containers/bing_avatar.jpg')}
-								size={28}
-							/>
-						</div>
-						<div className="chat__message__text">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut felis eget lectus.
-						</div>
-					</div>
-
-					<div className="chat__message chat__message--external">
-						<div className="chat__message__avatar">
-							<Avatar size={28}>
-								HU
-							</Avatar>
-						</div>
-						<div className="chat__message__text">
-							你好
-						</div>
-					</div>
-
-					<div className="chat__message">
-						<div className="chat__message__avatar">
-							<Avatar
-								src={AssetStore.get('assets/images/containers/bing_avatar.jpg')}
-								size={28}
-							/>
-						</div>
-						<div className="chat__message__text">
-							Pellentesque justo nulla.
-						</div>
-					</div>
+						return (
+							<div key={key} className={`chat__message${externalClass}`}>
+								<div className="chat__message__avatar">
+									{message.avatar ?
+										<Avatar src={message.avatar} size={28}/>
+										:
+										<Avatar size={28}>{message.initials}</Avatar>
+									}
+								</div>
+								<div className="chat__message__text">
+									{message.text}
+								</div>
+							</div>
+						);
+					})}
 				</div>
 				<div className="chat__action">
 					<div className="margin-left-xsmall margin-right-xsmall">
@@ -64,10 +85,13 @@ class ChatBox extends React.Component {
 							type="text"
 							placeholder="Enter your message..."
 							className="chat__action__input"
+							ref={element => this._input = element}
+							onKeyPress={this.onKeyInputPress}
 						/>
 						<img
 							src={AssetStore.get('assets/images/buttons/chat_send_btn.png')}
 							className="btn chat__action__send"
+							onClick={this.onSend}
 						/>
 					</div>
 				</div>
@@ -77,13 +101,28 @@ class ChatBox extends React.Component {
 }
 
 function mapStateToProps(state) {
+	const {
+		chat: {
+			messages,
+		},
+		user: {
+			avatar,
+			initials,
+			userId,
+		},
+	} = state;
+
 	return {
-		message: state.message,
+		avatar,
+		initials,
+		messages,
+		userId,
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
+		onSendChatMessage: (message) => dispatch(sendChatMessage(message)),
 		onPostChatMessage: (message) => dispatch(postChatMessage(message)),
 	};
 }

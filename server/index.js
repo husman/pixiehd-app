@@ -4,6 +4,8 @@ import OpenTok from 'opentok';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server'
 import HTML from '../app/components/html';
+import AssetStore from "../lib/AssetStore";
+import uuid from 'uuid';
 
 const app = express();
 const server = require('http').createServer(app);
@@ -18,12 +20,23 @@ app.use(router);
 
 const roomToSessionIdDictionary = {};
 
+function makeInitials() {
+	let text = '';
+	const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	for (let i = 0; i < 2; i++)
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+	return text;
+}
+
 router.get('/', async (req, res) => {
 	const apiKey = '46003032';
 	const secret = '135571e6887919f56e5b7d48b0f6e8e9adc47da3';
 	const opentok = new OpenTok(apiKey, secret);
 
 	const roomName = req.query.r;
+	const userId = Number(req.query.uid) || uuid.v4();
 	let sessionId;
 	let token;
 	console.log('attempting to create a session associated with the room: ' + roomName);
@@ -60,7 +73,12 @@ router.get('/', async (req, res) => {
 				apiKey: apiKey,
 				sessionId: sessionId,
 				token: token,
-			}
+			},
+			chat: {},
+			user: {
+				userId,
+				initials: makeInitials(),
+			},
 		},
 		assetBasePath: process.env.ASSET_BASE_PATH || '',
 	};
@@ -124,9 +142,20 @@ io.on('connection', (socket) => {
 			}
 		})
 	});
+
+	socket.on('chat:message', (message) => {
+		const { roomName } = socket;
+
+		wsClients[roomName].forEach(s => {
+			if (s.id !== socket.id) {
+				s.emit('chat:message', message);
+			}
+		})
+	});
 });
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
+	AssetStore.init(process.env.ASSET_BASE_PATH || '');
 	console.log(`Server is listening on port ${PORT}!!`);
 });
