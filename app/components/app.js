@@ -1,5 +1,5 @@
 import React from 'react';
-import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
+import { OTSession, OTPublisher, OTStreams, OTSubscriber, createSession } from 'opentok-react/dist';
 import ToolItem from './ToolItem'
 import Canvas from './Whiteboard';
 import AssetStore from '../../lib/AssetStore';
@@ -7,8 +7,10 @@ import { Tools } from "react-sketch/lib/index";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ChatBox from './ChatBox';
 import { GridList } from 'material-ui/GridList';
+import { connect } from "react-redux";
 
-export default class App extends React.Component {
+
+class App extends React.Component {
 	_session = null;
 
 	constructor(...props) {
@@ -17,7 +19,9 @@ export default class App extends React.Component {
 		this.state = {
 			error: null,
 			connection: 'Connecting',
-			publishVideo: true,
+			publishAudio: true,
+			publishVideo: false,
+			streams: [],
 		};
 
 		this.sessionEventHandlers = {
@@ -52,6 +56,12 @@ export default class App extends React.Component {
 			streamDestroyed: ({ reason }) => {
 				console.log(`Publisher stream destroyed because: ${reason}`);
 			},
+			videoEnabled: () => {
+				console.log('Publisher video enabled');
+			},
+			videoDisabled: () => {
+				console.log('Publisher video disabled');
+			},
 		};
 
 		this.subscriberEventHandlers = {
@@ -62,6 +72,23 @@ export default class App extends React.Component {
 				console.log('Subscriber video disabled');
 			},
 		};
+	}
+
+	componentWillMount() {
+		const { apiKey, sessionId, token } = this.props.credentials;
+
+		this.sessionHelper = createSession({
+			apiKey: apiKey,
+			sessionId: sessionId,
+			token: token,
+			onStreamsUpdated: streams => {
+				this.setState({ streams });
+			}
+		});
+	}
+
+	componentWillUnmount() {
+		this.sessionHelper.disconnect();
 	}
 
 	onSessionError = error => {
@@ -88,10 +115,20 @@ export default class App extends React.Component {
 		this.setState({ publishVideo: !this.state.publishVideo });
 	};
 
+	toggleMicrophone = () => {
+		this.setState({ publishAudio: !this.state.publishAudio });
+	};
+
 	onSessionReady = (ref) => {
 		if (ref) {
 			this._session = ref.sessionHelper.session;
 		}
+	};
+
+	onPanelTabClick = (e) => {
+		this.setState({
+			activePanel: e.target.id,
+		});
 	};
 
 	onChangeTool = function (tool) {
@@ -101,15 +138,19 @@ export default class App extends React.Component {
 		})
 	};
 
-	handleNewUserMessage = (newMessage) => {
-		console.log(`New message incomig! ${newMessage}`);
-		// Now send the message throught the backend API
-		addResponseMessage(response);
-	};
-
 	render() {
 		const { apiKey, sessionId, token } = this.props.credentials;
-		const { error, connection, publishVideo, tool = Tools.Pencil } = this.state || {};
+		const {
+			fullName
+		} = this.props;
+		const {
+			error,
+			connection,
+			publishAudio,
+			publishVideo,
+			tool = Tools.Pencil,
+			activePanel = 'tab-video'
+		} = this.state || {};
 
 		const styles = {
 			root: {
@@ -118,7 +159,7 @@ export default class App extends React.Component {
 				justifyContent: 'space-around',
 			},
 			gridList: {
-				height: '100%',
+				height: '50%',
 				overflowY: 'auto',
 			},
 		};
@@ -137,7 +178,7 @@ export default class App extends React.Component {
 					</div>
 					<div className="columns">
 						<div className="column is-narrow">
-							<div className="tools-panel">
+							<div className="tools-panel margin-bottom-small">
 								<div className="margin-top-xsmall">
 									<ToolItem
 										src={AssetStore.get('assets/images/tools/pointer.png')}
@@ -161,16 +202,26 @@ export default class App extends React.Component {
 								</div>
 								<div className="margin-top-small">
 									<ToolItem
-										src={AssetStore.get('assets/images/tools/grid-1.png')}
-										onClick={this.onChangeTool.bind(this, Tools.Pan)}
-										active={tool === Tools.Pan}
+										src={AssetStore.get('assets/images/tools/text.png')}
+										onClick={this.onChangeTool.bind(this, Tools.Text)}
+										active={tool === Tools.Text}
+									/>
+								</div>
+							</div>
+
+							<div className="tools-panel">
+								<div className="margin-top-xsmall">
+									<ToolItem
+										src={AssetStore.get(`assets/images/tools/mic-${publishAudio ? 'on' : 'off'}.png`)}
+										onClick={this.toggleMicrophone}
 									/>
 								</div>
 								<div className="margin-top-small">
-									<ToolItem src={AssetStore.get('assets/images/tools/text.png')}/>
-								</div>
-								<div className="margin-top-small margin-bottom-xsmall">
-									<ToolItem src={AssetStore.get('assets/images/tools/quicktext.png')}/>
+									<ToolItem
+										src={AssetStore.get(`assets/images/tools/video-${publishVideo ? 'on' : 'off'}.png`)}
+										className="tool-item--video"
+										onClick={this.toggleVideo}
+									/>
 								</div>
 							</div>
 						</div>
@@ -183,43 +234,65 @@ export default class App extends React.Component {
 						<div className="column">
 							<GridList
 								cols={1}
-								cellHeight={200}
-								padding={1}
 								style={styles.gridList}
 							>
 								<div className="right-panel">
-									<OTSession
-										apiKey={apiKey}
-										sessionId={sessionId}
-										token={token}
-										onError={this.onSessionError}
-										eventHandlers={this.sessionEventHandlers}
-										ref={this.onSessionReady}
-									>
+									<input
+										type="radio"
+										id="tab-video"
+										name="tabs"
+										checked={activePanel === 'tab-video'}
+										onChange={this.onPanelTabClick}
+									/>
+									<label htmlFor="tab-video">VIDEO</label>
+
+									<input
+										type="radio"
+										id="tab-files"
+										name="tabs"
+										checked={activePanel === 'tab-files'}
+										onChange={this.onPanelTabClick}
+									/>
+									<label htmlFor="tab-files">FILES</label>
+
+									<section id="tab-video-content" className="tab-content">
 										<OTPublisher
 											properties={{
-												publishVideo, style: {
-													buttonDisplayMode: 'on',
-												}
+												publishAudio,
+												publishVideo,
+												style: {
+													buttonDisplayMode: 'off',
+												},
+												name: fullName,
 											}}
-											onPublish={this.onPublish}
-											onError={this.onPublishError}
+											session={this.sessionHelper.session}
 											eventHandlers={this.publisherEventHandlers}
 										/>
-										<OTStreams>
-											<OTSubscriber
-												properties={{ width: 100, height: 100 }}
-												onSubscribe={this.onSubscribe}
-												onError={this.onSubscribeError}
-												eventHandlers={this.subscriberEventHandlers}
-											/>
-										</OTStreams>
-									</OTSession>
-								</div>
-								<div className="margin-top-small">
-									<ChatBox/>
+
+										{this.state.streams.map(stream => {
+											return (
+												<OTSubscriber
+													key={stream.id}
+													session={this.sessionHelper.session}
+													stream={stream}
+													properties={{
+														style: {
+															nameDisplayMode: 'on',
+														},
+													}}
+												/>
+											);
+										})}
+									</section>
+
+									<section id="tab-files-content" className="tab-content">
+										<div style={{ textAlign: 'center' }}>
+											Coming Soon...
+										</div>
+									</section>
 								</div>
 							</GridList>
+							<ChatBox/>
 						</div>
 					</div>
 				</div>
@@ -227,3 +300,18 @@ export default class App extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	const {
+		user: {
+			fullName,
+			initials,
+		},
+	} = state;
+
+	return {
+		fullName: fullName || initials,
+	};
+}
+
+export default connect(mapStateToProps, null)(App)

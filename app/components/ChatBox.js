@@ -83,7 +83,7 @@ class ChatBox extends React.Component {
 					<div className="margin-left-xsmall margin-right-xsmall">
 						<input
 							type="text"
-							placeholder="Enter your message..."
+							placeholder="Enter your message.."
 							className="chat__action__input"
 							ref={element => this._input = element}
 							onKeyPress={this.onKeyInputPress}

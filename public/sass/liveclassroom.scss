@@ -26,14 +26,14 @@ header {
 .OT_subscriber {
   margin-top: 20px;
   width: 100% !important;
-  height: 200px !important;
+  height: 100px !important;
   min-height: 150px !important;
   border: 1px solid #0f0;
 }
 
 .OT_publisher {
   width: 100% !important;
-  height: 200px !important;
+  height: 100px !important;
   min-height: 150px !important;
   border: 1px solid #f00;
 }
@@ -68,6 +68,12 @@ header {
   .tool-item__image {
     height: 24px;
     padding: 1px;
+  }
+}
+
+.tool-item--video {
+  .tool-item__image {
+    padding: 4px;
   }
 }
 
@@ -133,6 +139,7 @@ header {
   padding: 5px;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
+  line-height: normal;
 }
 
 #root, .body-container, .canvas-wrapper {
@@ -175,4 +182,55 @@ header {
   &:hover {
     cursor: pointer;
   }
+}
+
+.right-panel {
+  .OT_subscriber {
+    margin-top: 15px;
+  }
+}
+
+section {
+  display: none;
+  padding: 5px 0 0;
+  border-top: 1px solid #ddd;
+}
+
+input {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 10px;
+  font-weight: 600;
+  text-align: center;
+  color: #a0a0a0;
+  border: 1px solid transparent;
+  font-size: 12px;
+  width: 50%;
+}
+
+label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+input:checked + label {
+  color: #555;
+  border: 1px solid #ddd;
+  border-top: 2px solid orange;
+  border-bottom: 1px solid #fff;
+  font-weight: bold;
+}
+
+#tab-video:checked ~ #tab-video-content,
+#tab-files:checked ~ #tab-files-content {
+  display: block;
+}
+
+.tab-content {
+  overflow-y: scroll;
+  height: 350px;
 }

@@ -36,6 +36,8 @@ router.get('/', async (req, res) => {
 	const opentok = new OpenTok(apiKey, secret);
 
 	const roomName = req.query.r;
+	const fullName = req.query.name;
+	console.log('fullName', fullName);
 	const userId = Number(req.query.uid) || uuid.v4();
 	let sessionId;
 	let token;
@@ -77,7 +79,8 @@ router.get('/', async (req, res) => {
 			chat: {},
 			user: {
 				userId,
-				initials: makeInitials(),
+				initials: fullName ? (fullName.match(/\b\w/g)).join('') : makeInitials(),
+				fullName,
 			},
 		},
 		assetBasePath: process.env.ASSET_BASE_PATH || '',

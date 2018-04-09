@@ -1,13 +1,14 @@
 .chat {
   border: 1px solid #777;
   margin-right: 15px;
+  margin-top: 5px;
   line-height: 1.6;
   background-color: #f2f2f5;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   font-size: 0.9em;
   position: relative;
-  height: 308px;
+  height: 50%;
 }
 
 .chat__message__text {
@@ -62,17 +63,18 @@
 }
 
 .chat__action__input {
-  width: 85%;
+  width: 80%;
   height: 35px;
-  font-size: 16px;
+  font-size: 14px;
   outline: 0;
   border: 0;
   vertical-align: middle;
   background: none;
+  display: inline;
 }
 
 .chat__action__send {
-  width: 30px;
+  width: 22px;
   vertical-align: middle;
   margin-left: 5px;
 }

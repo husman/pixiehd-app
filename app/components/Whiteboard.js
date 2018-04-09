@@ -8,6 +8,58 @@ import AssetStore from "../../lib/AssetStore";
 class DrawArea extends React.Component {
 	_canvas = null;
 
+	onCanvasObjectCreated = ({ path, width, height, id }) => {
+		const { width: activeWidth, height: activeHeight } = this._canvas;
+		const xFactor = activeWidth / width;
+		const yFactor = activeHeight / height;
+
+		const p = fabric['Path'].fromObject(path);
+		const scaleX = p.scaleX;
+		const scaleY = p.scaleY;
+		const left = p.left;
+		const top = p.top;
+
+		const tempScaleX = scaleX * xFactor;
+		const tempScaleY = scaleY * yFactor;
+		const tempLeft = left * xFactor;
+		const tempTop = top * yFactor;
+
+		p.id = id;
+		p.scaleX = tempScaleX;
+		p.scaleY = tempScaleY;
+		p.left = tempLeft;
+		p.top = tempTop;
+
+		p.setCoords();
+
+		this.props.onAddPathToCanvas(path);
+		this._canvas.add(p);
+		this._canvas.calcOffset();
+		this._canvas.renderAll();
+	};
+
+	onCanvasNewText = ({ path, width, height, id }) => {
+		const { width: activeWidth, height: activeHeight } = this._canvas;
+		const xFactor = activeWidth / width;
+		const yFactor = activeHeight / height;
+
+		const p = fabric['Path'].fromObject(path);
+		const originalLeft = p.left;
+		const originalTop = p.top;
+
+		const left = originalLeft * xFactor;
+		const top = originalTop * yFactor;
+
+		const text = new fabric.IText(path.text, {
+			left,
+			top,
+		});
+		text.id = id;
+
+		this._canvas.add(text);
+		this._canvas.renderAll();
+	};
+
 	initialize = (canvas) => {
 		if (!canvas) {
 			return;
@@ -39,38 +91,26 @@ class DrawArea extends React.Component {
 			SocketClient.emit('canvas:object:modified', data);
 		});
 
-		SocketClient.on('canvas:path:created', ({ path, width, height, id }) => {
-			const { width: activeWidth, height: activeHeight } = this._canvas;
-			const xFactor = activeWidth / width;
-			const yFactor = activeHeight / height;
-
-			const p = fabric['Path'].fromObject(path);
-			const scaleX = p.scaleX;
-			const scaleY = p.scaleY;
-			const left = p.left;
-			const top = p.top;
-
-			const tempScaleX = scaleX * xFactor;
-			const tempScaleY = scaleY * yFactor;
-			const tempLeft = left * xFactor;
-			const tempTop = top * yFactor;
-
-			p.id = id;
-			p.scaleX = tempScaleX;
-			p.scaleY = tempScaleY;
-			p.left = tempLeft;
-			p.top = tempTop;
-
-			p.setCoords();
-
-			this.props.onAddPathToCanvas(path);
-			this._canvas.add(p);
-			this._canvas.calcOffset();
-			this._canvas.renderAll();
-		});
+		SocketClient.on('canvas:path:created', this.onCanvasObjectCreated);
 
 		SocketClient.on('canvas:object:modified', ({ path, width, height, id }) => {
 			const element = this._canvas.getObjects().find(obj => obj.id === id);
+			const isNewText = !element && path.type === 'i-text';
+			const isTextEdit = element && element.text !== path.text;
+
+			if (isNewText) {
+				this.onCanvasNewText({ path, width, height, id });
+				return;
+			}
+
+			console.log('element', element, 'path', path);
+
+			if (isTextEdit) {
+				console.log('text edit detected');
+				element.text = path.text;
+				this._canvas.renderAll();
+				return;
+			}
 
 			if (!element) {
 				return;

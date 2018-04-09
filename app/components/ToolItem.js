@@ -6,10 +6,10 @@ export default class ToolItem extends React.Component {
 	}
 
 	render() {
-		const { src, onClick, active } = this.props;
+		const { src, onClick, active, className } = this.props;
 		return (
 			<div
-				className={`tool-item ${active ? 'active' : ''}`}
+				className={`tool-item ${active ? 'active' : ''} ${className ? className : ''}`}
 				onClick={onClick}
 			>
 				<img className='tool-item__image' src={src}/>
