@@ -6,6 +6,14 @@ import Avatar from 'material-ui/Avatar';
 import SocketClient from '../../lib/SocketClient';
 
 class ChatBox extends React.Component {
+	componentDidMount() {
+		window.addEventListener("resize", this.resizeChatBox);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("resize", this.resizeChatBox);
+	}
+
 	onKeyInputPress = (e) => {
 		if (e.key === 'Enter') {
 			this.onSend();
@@ -39,12 +47,28 @@ class ChatBox extends React.Component {
 		setTimeout(() => this._chatMessages.scrollTop = this._chatMessages.scrollHeight, 0);
 	};
 
+	resizeChatBox = () => {
+		this.setState({
+			chatMessageMaxWidth: this._chatMessages.offsetWidth - 55,
+			chatMessageMaxHeight: this._chatMessages.offsetHeight - 20,
+		});
+	};
+
 	initChat = (element) => {
 		this._chatMessages = element;
+		this.resizeChatBox();
 
 		SocketClient.on('chat:message', (message) => {
 			this.props.onPostChatMessage(message);
 			this.scrollChatMessagesToBottom();
+		});
+	};
+
+	initChatBox = (element) => {
+		this._chatbox = element;
+
+		this.setState({
+			chatBoxMaxHeight: this._chatbox.offsetHeight,
 		});
 	};
 
@@ -54,8 +78,19 @@ class ChatBox extends React.Component {
 			userId,
 		} = this.props;
 
+		const {
+			chatMessageMaxWidth,
+			chatBoxMaxHeight,
+		} = this.state || {};
+
 		return (
-			<div className="chat">
+			<div
+				className="chat"
+				ref={this.initChatBox}
+				style={{
+					height: chatBoxMaxHeight,
+				}}
+			>
 				<div
 					className="chat__messages"
 					ref={this.initChat}
@@ -72,7 +107,12 @@ class ChatBox extends React.Component {
 										<Avatar size={28}>{message.initials}</Avatar>
 									}
 								</div>
-								<div className="chat__message__text">
+								<div
+									className="chat__message__text"
+									style={{
+										width: chatMessageMaxWidth,
+									}}
+								>
 									{message.text}
 								</div>
 							</div>

@@ -1,7 +1,5 @@
 .chat {
   border: 1px solid #777;
-  margin-right: 15px;
-  margin-top: 5px;
   line-height: 1.6;
   background-color: #f2f2f5;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
@@ -9,11 +7,15 @@
   font-size: 0.9em;
   position: relative;
   height: 50%;
+  width: 95%;
+  margin: 5px auto 0;
 }
 
 .chat__message__text {
   border-radius: 5px;
   padding: 10px;
+  word-wrap: break-word;
+  text-align: left;
 }
 
 .chat__message {
@@ -51,7 +53,7 @@
 
 .chat__messages {
   height: 85%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .chat__action {

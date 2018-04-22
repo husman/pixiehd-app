@@ -38,6 +38,31 @@ class DrawArea extends React.Component {
 		this._canvas.renderAll();
 	};
 
+	onCanvasImageCreated = ({ path, width, height, id }) => {
+		const { width: activeWidth, height: activeHeight } = this._canvas;
+		const xFactor = activeWidth / width;
+		const yFactor = activeHeight / height;
+		const left = path.left * xFactor;
+		const top = path.top * yFactor;
+		const imgWidth = path.width * xFactor;
+		const imgHeight = path.height * yFactor;
+
+		fabric.Image.fromURL(path.src, (element) => {
+			const img = element.set({
+				left,
+				top,
+				width: imgWidth,
+				height: imgHeight,
+			});
+
+			img.id = id;
+
+			this._canvas.add(img);
+			this._canvas.calcOffset();
+			this._canvas.renderAll();
+		});
+	};
+
 	onCanvasNewText = ({ path, width, height, id }) => {
 		const { width: activeWidth, height: activeHeight } = this._canvas;
 		const xFactor = activeWidth / width;
@@ -53,6 +78,7 @@ class DrawArea extends React.Component {
 		const text = new fabric.IText(path.text, {
 			left,
 			top,
+			fill: path.fill,
 		});
 		text.id = id;
 
@@ -66,6 +92,10 @@ class DrawArea extends React.Component {
 		}
 
 		this._canvas = canvas._fc;
+
+		if (this.props.onInit) {
+			this.props.onInit(this._canvas);
+		}
 
 		this._canvas.on('path:created', (e) => {
 			e.path.id = new Date().getTime();
@@ -92,6 +122,7 @@ class DrawArea extends React.Component {
 		});
 
 		SocketClient.on('canvas:path:created', this.onCanvasObjectCreated);
+		SocketClient.on('canvas:image:created', this.onCanvasImageCreated);
 
 		SocketClient.on('canvas:object:modified', ({ path, width, height, id }) => {
 			const element = this._canvas.getObjects().find(obj => obj.id === id);
@@ -103,10 +134,7 @@ class DrawArea extends React.Component {
 				return;
 			}
 
-			console.log('element', element, 'path', path);
-
 			if (isTextEdit) {
-				console.log('text edit detected');
 				element.text = path.text;
 				this._canvas.renderAll();
 				return;
@@ -154,7 +182,10 @@ class DrawArea extends React.Component {
 	};
 
 	render() {
-		const { tool } = this.props;
+		const {
+			color = 'black',
+			tool,
+		} = this.props;
 
 		return (
 			<div className="canvas-wrapper">
@@ -167,7 +198,7 @@ class DrawArea extends React.Component {
 				</div>
 				<SketchField
 					tool={tool}
-					lineColor='black'
+					lineColor={color}
 					lineWidth={3}
 					className="drawArea"
 					ref={this.initialize}

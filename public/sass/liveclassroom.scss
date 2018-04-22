@@ -46,9 +46,10 @@ header {
   background-color: #ffffff;
   padding: 5px;
   border: 1px solid #777;
-  margin-left: 15px;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
+  margin: 0 auto 15px;
+  display: inline-block;
 }
 
 .tool-item {
@@ -136,10 +137,11 @@ header {
   background-color: #fff;
   border: 1px solid #777;
   margin-right: 15px;
-  padding: 5px;
+  padding: 0 3px;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   line-height: normal;
+  width: 100%;
 }
 
 #root, .body-container, .canvas-wrapper {
@@ -233,4 +235,60 @@ input:checked + label {
 .tab-content {
   overflow-y: scroll;
   height: 350px;
+}
+
+.body-wrapper {
+  width: 100%;
+  height: 100%;
+  display: table;
+  text-align: left;
+}
+
+.tools-panel-wrapper {
+  width: 53px;
+  height: 100%;
+  display: table-cell;
+  vertical-align: top;
+  text-align: center;
+}
+
+.canvas-wrap {
+  height: 100%;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.right-panel-wrapper {
+  width: 303px;
+  height: 100%;
+  display: table-cell;
+  vertical-align: top;
+  text-align: center;
+}
+
+.video-grid {
+  div:first-child {
+    padding: 0 !important;
+  }
+}
+
+.filepicker {
+  &.dz-clickable {
+    font-size: 13px;
+    cursor: pointer;
+    height: 36px;
+    line-height: 36px;
+    width: 100%;
+    background-color: rgb(255, 64, 129);
+    text-align: center;
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 7px;
+  }
+}
+
+.color-picker {
+  position: absolute;
+  z-index: 2;
+  transform: translate(5%, 10%);
 }

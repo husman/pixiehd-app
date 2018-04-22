@@ -23,9 +23,9 @@ const {
 const store = createStore(
 	reducer,
 	window.__react_context__.state,
-	compose(
-		window.devToolsExtension ? window.devToolsExtension() : f => f
-	)
+	// compose(
+	// 	window.devToolsExtension ? window.devToolsExtension() : f => f
+	// )
 );
 
 const socket = require('socket.io-client')(window.location.host, { query: `roomName=${roomName}` });

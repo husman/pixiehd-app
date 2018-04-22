@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import HTML from '../app/components/html';
 import AssetStore from "../lib/AssetStore";
 import uuid from 'uuid';
+import * as multer from 'multer'
 
 const app = express();
 const server = require('http').createServer(app);
@@ -15,6 +16,7 @@ const router = Router();
 
 app.use('/dist', express.static('./dist/app'));
 app.use('/assets', express.static('./public/assets'));
+app.use('/uploads', express.static('./uploads'));
 app.use(noCache());
 app.use(router);
 
@@ -136,6 +138,16 @@ io.on('connection', (socket) => {
 		})
 	});
 
+	socket.on('canvas:image:created', (data) => {
+		const { roomName } = socket;
+
+		wsClients[roomName].forEach(s => {
+			if (s.id !== socket.id) {
+				s.emit('canvas:image:created', data);
+			}
+		})
+	});
+
 	socket.on('canvas:clear', () => {
 		const { roomName } = socket;
 
@@ -155,6 +167,16 @@ io.on('connection', (socket) => {
 			}
 		})
 	});
+});
+
+const upload = multer({ dest: 'uploads/' });
+
+router.post('/upload', upload.single('file'), function (req, res) {
+	if (req.file && req.file.originalname) {
+		console.log(`Received file ${req.file.originalname}`);
+	}
+
+	res.send({ responseText: req.file.path }); // You can send any response to the user here
 });
 
 const PORT = process.env.PORT || 4000;

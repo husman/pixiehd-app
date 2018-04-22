@@ -8,10 +8,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ChatBox from './ChatBox';
 import { GridList } from 'material-ui/GridList';
 import { connect } from "react-redux";
-
+import FileUploader from './FileUploader';
+import SocketClient from '../../lib/SocketClient';
+import uuid from 'uuid';
+import { SketchPicker } from 'react-color'
+import ColorPickerIcon from './ColorPickerIcon';
 
 class App extends React.Component {
 	_session = null;
+	_canvas = null;
 
 	constructor(...props) {
 		super(...props);
@@ -22,11 +27,11 @@ class App extends React.Component {
 			publishAudio: true,
 			publishVideo: false,
 			streams: [],
+			isColorPickerVisible: false,
 		};
 
 		this.sessionEventHandlers = {
 			sessionConnected: () => {
-				console.log('this._session', this._session);
 				this.setState({ connection: 'Connected' });
 			},
 			sessionDisconnected: () => {
@@ -37,12 +42,6 @@ class App extends React.Component {
 			},
 			sessionReconnecting: () => {
 				this.setState({ connection: 'Reconnecting' });
-			},
-			signal: (event) => {
-				if (this._session.connection.id !== event.from.id) {
-					console.log("Signal sent from connection: " + event.from.id);
-					console.log("Signal data: " + event.data);
-				}
 			},
 		};
 
@@ -72,6 +71,23 @@ class App extends React.Component {
 				console.log('Subscriber video disabled');
 			},
 		};
+	}
+
+	stateChanged(props, currentState, nextState) {
+		return props.some(prop => currentState[prop] !== nextState[prop]);
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const stateProperties = [
+			'isColorPickerVisible',
+			'publishAudio',
+			'publishVideo',
+			'streams',
+			'tool',
+			'hexColor',
+			'activePanel',
+		];
+		return this.stateChanged(stateProperties, this.state, nextState);
 	}
 
 	componentWillMount() {
@@ -132,10 +148,80 @@ class App extends React.Component {
 	};
 
 	onChangeTool = function (tool) {
-		console.log('changing the tool to', tool);
 		this.setState({
 			tool,
 		})
+	};
+
+	onCanvasInit = (canvas) => {
+		this._canvas = canvas;
+	};
+
+	onAddToCanvas = (file) => {
+		fabric.Image.fromURL(file.img, (element) => {
+			const ratio = element.width / element.height;
+			let width = this._canvas.width / 2;
+			let height = this._canvas.height / 2;
+
+			if (element.width > element.height) {
+				height = width / ratio;
+			} else {
+				width = height * ratio;
+			}
+
+			const imgLeft = (this._canvas.width - width) / 2;
+			const imgTop = (this._canvas.height - height) / 2;
+
+			const img = element.set({
+				left: imgLeft,
+				top: imgTop,
+				width,
+				height,
+			});
+
+			img.id = uuid.v4();
+
+			this._canvas.add(img);
+
+			const data = {
+				path: {
+					left: imgLeft,
+					top: imgTop,
+					width,
+					height,
+					src: file.img,
+				},
+				width: this._canvas.width,
+				height: this._canvas.height,
+				id: img.id,
+			};
+
+			SocketClient.emit('canvas:image:created', data);
+		});
+	};
+
+	toggleColorPicker = (e) => {
+		e.stopPropagation();
+		this.setState({
+			isColorPickerVisible: !this.state.isColorPickerVisible,
+		})
+	};
+
+	cleanUpUI = () => {
+		this.setState({
+			isColorPickerVisible: false,
+		})
+	};
+
+	onColorPickerContainerClicked = (e) => {
+		e.stopPropagation();
+	};
+
+	onColorPickerChanged = (color) => {
+		this.setState({
+			color,
+			hexColor: color.hex,
+		});
 	};
 
 	render() {
@@ -144,12 +230,13 @@ class App extends React.Component {
 			fullName
 		} = this.props;
 		const {
-			error,
-			connection,
 			publishAudio,
 			publishVideo,
 			tool = Tools.Pencil,
-			activePanel = 'tab-video'
+			activePanel = 'tab-video',
+			isColorPickerVisible,
+			color,
+			hexColor,
 		} = this.state || {};
 
 		const styles = {
@@ -161,12 +248,16 @@ class App extends React.Component {
 			gridList: {
 				height: '50%',
 				overflowY: 'auto',
+				width: '95%',
+				margin: '-2px auto',
 			},
 		};
 
+		const videoSource = !publishVideo ? { videoSource: null } : {};
+
 		return (
 			<MuiThemeProvider>
-				<div className='body-container'>
+				<div className='body-container' onClick={this.cleanUpUI}>
 					<div id="header">
 						<header
 							style={{
@@ -176,8 +267,8 @@ class App extends React.Component {
 							<img src={AssetStore.get('assets/images/tools/cfa-logo-lc-alt.png')}/>
 						</header>
 					</div>
-					<div className="columns">
-						<div className="column is-narrow">
+					<div className="body-wrapper">
+						<div className="tools-panel-wrapper">
 							<div className="tools-panel margin-bottom-small">
 								<div className="margin-top-xsmall">
 									<ToolItem
@@ -207,6 +298,22 @@ class App extends React.Component {
 										active={tool === Tools.Text}
 									/>
 								</div>
+								<div className="margin-top-small">
+									<ColorPickerIcon
+										color={hexColor}
+										onClick={this.toggleColorPicker}
+									/>
+									{isColorPickerVisible ?
+										<div className="color-picker" onClick={this.onColorPickerContainerClicked}>
+											<SketchPicker
+												disableAlpha
+												color={color}
+												onChangeComplete={this.onColorPickerChanged}
+											/>
+										</div>
+										: null
+									}
+								</div>
 							</div>
 
 							<div className="tools-panel">
@@ -225,16 +332,20 @@ class App extends React.Component {
 								</div>
 							</div>
 						</div>
-						<div className="column is-9">
+						<div className="canvas-wrap">
 							<Canvas
 								session={this._session}
 								tool={tool}
+								color={hexColor}
+								onInit={this.onCanvasInit}
 							/>
 						</div>
-						<div className="column">
+						<div className="right-panel-wrapper">
 							<GridList
 								cols={1}
 								style={styles.gridList}
+								spacing={0}
+								className="video-grid"
 							>
 								<div className="right-panel">
 									<input
@@ -264,6 +375,7 @@ class App extends React.Component {
 													buttonDisplayMode: 'off',
 												},
 												name: fullName,
+												...videoSource,
 											}}
 											session={this.sessionHelper.session}
 											eventHandlers={this.publisherEventHandlers}
@@ -287,7 +399,9 @@ class App extends React.Component {
 
 									<section id="tab-files-content" className="tab-content">
 										<div style={{ textAlign: 'center' }}>
-											Coming Soon...
+											<FileUploader
+												onAddToCanvas={this.onAddToCanvas}
+											/>
 										</div>
 									</section>
 								</div>
