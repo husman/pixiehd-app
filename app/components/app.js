@@ -73,22 +73,22 @@ class App extends React.Component {
 		};
 	}
 
-	// stateChanged(props, currentState, nextState) {
-	// 	return props.some(prop => currentState[prop] !== nextState[prop]);
-	// }
+	stateChanged(props, currentState, nextState) {
+		return props.some(prop => currentState[prop] !== nextState[prop]);
+	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const stateProperties = [
-	// 		'isColorPickerVisible',
-	// 		'publishAudio',
-	// 		'publishVideo',
-	// 		'streams',
-	// 		'tool',
-	// 		'hexColor',
-	// 		'activePanel',
-	// 	];
-	// 	return this.stateChanged(stateProperties, this.state, nextState);
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		const stateProperties = [
+			'isColorPickerVisible',
+			'publishAudio',
+			'publishVideo',
+			'streams',
+			'tool',
+			'hexColor',
+			'activePanel',
+		];
+		return this.stateChanged(stateProperties, this.state, nextState);
+	}
 
 	componentWillMount() {
 		const { apiKey, sessionId, token } = this.props.credentials;

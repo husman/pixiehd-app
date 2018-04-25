@@ -144,6 +144,7 @@ class DrawArea extends React.Component {
 				return;
 			}
 
+			const isImage = path.type === 'image';
 			const { width: activeWidth, height: activeHeight } = this._canvas;
 			const xFactor = activeWidth / width;
 			const yFactor = activeHeight / height;
@@ -159,8 +160,14 @@ class DrawArea extends React.Component {
 			const tempLeft = left * xFactor;
 			const tempTop = top * yFactor;
 
-			element.scaleX = tempScaleX;
-			element.scaleY = tempScaleY;
+			if (isImage) {
+				element.scaleX = scaleX;
+				element.scaleY = scaleY;
+			} else {
+				element.scaleX = tempScaleX;
+				element.scaleY = tempScaleY;
+			}
+
 			element.left = tempLeft;
 			element.top = tempTop;
 			element.angle = path.angle;
