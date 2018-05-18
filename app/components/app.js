@@ -77,19 +77,6 @@ class App extends React.Component {
 		return props.some(prop => currentState[prop] !== nextState[prop]);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const stateProperties = [
-			'isColorPickerVisible',
-			'publishAudio',
-			'publishVideo',
-			'streams',
-			'tool',
-			'hexColor',
-			'activePanel',
-		];
-		return this.stateChanged(stateProperties, this.state, nextState);
-	}
-
 	componentWillMount() {
 		const { apiKey, sessionId, token } = this.props.credentials;
 
