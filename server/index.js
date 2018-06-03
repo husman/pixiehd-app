@@ -7,6 +7,7 @@ import HTML from '../app/components/html';
 import AssetStore from "../lib/AssetStore";
 import uuid from 'uuid';
 import * as multer from 'multer'
+import LinkPreview from 'react-native-link-preview';
 
 const app = express();
 const server = require('http').createServer(app);
@@ -158,13 +159,21 @@ io.on('connection', (socket) => {
 		})
 	});
 
-	socket.on('chat:message', (message) => {
+	socket.on('chat:message', async (message) => {
 		const { roomName } = socket;
 
+		let preview;
+		try {
+			preview = await LinkPreview.getPreview(message.text);
+		} catch (e) {
+			preview = {};
+		}
+
 		wsClients[roomName].forEach(s => {
-			if (s.id !== socket.id) {
-				s.emit('chat:message', message);
-			}
+			s.emit('chat:message', {
+				...preview,
+				...message,
+			});
 		})
 	});
 });

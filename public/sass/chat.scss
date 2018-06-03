@@ -32,6 +32,10 @@
     background-color: #0084ff;
     color: #ffffff;
     width: 85%;
+
+    a {
+      color: #333333;
+    }
   }
 
   .chat__message__avatar {
@@ -44,6 +48,10 @@
     float: right;
     background-color: #ffffff;
     color: #333333;
+
+    a {
+      color: #3273dc;
+    }
   }
 
   .chat__message__avatar {
@@ -53,7 +61,7 @@
 
 .chat__messages {
   height: 85%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .chat__action {

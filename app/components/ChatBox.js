@@ -4,6 +4,7 @@ import { postChatMessage, sendChatMessage } from '../actions/chat';
 import AssetStore from "../../lib/AssetStore";
 import Avatar from 'material-ui/Avatar';
 import SocketClient from '../../lib/SocketClient';
+import AutoLinkText from 'react-autolink-text2';
 
 class ChatBox extends React.Component {
 	componentDidMount() {
@@ -61,6 +62,11 @@ class ChatBox extends React.Component {
 		SocketClient.on('chat:message', (message) => {
 			this.props.onPostChatMessage(message);
 			this.scrollChatMessagesToBottom();
+
+			if (message.userId !== this.props.userId) {
+				const audio = new Audio(AssetStore.get('assets/sounds/userIdle.mp3'));
+				audio.play();
+			}
 		});
 	};
 
@@ -113,7 +119,15 @@ class ChatBox extends React.Component {
 										width: chatMessageMaxWidth,
 									}}
 								>
-									{message.text}
+									<AutoLinkText
+										text={message.text}
+										linkProps={{
+											target: '_blank'
+										}}
+									/>
+									{message.title ? <div>{message.title}</div> : null}
+									{message.description ? <div>{message.description}</div> : null}
+									{message.images && message.images.length ? <img src={message.images[0]}/> : null}
 								</div>
 							</div>
 						);

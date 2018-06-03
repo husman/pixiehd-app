@@ -233,7 +233,7 @@ input:checked + label {
 }
 
 .tab-content {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 350px;
 }
 
