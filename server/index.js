@@ -32,6 +32,9 @@ function makeInitials() {
 
 	return text;
 }
+router.get('/health', async (req, res) => {
+	res.send('OK');
+});
 
 router.get('/', async (req, res) => {
 	const apiKey = '46003032';
