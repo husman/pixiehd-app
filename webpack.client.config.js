@@ -71,7 +71,10 @@ module.exports = {
 	devServer: {
 		host: 'localhost',
 		port: 4001,
-		headers: { 'Access-Control-Allow-Origin': '*' },
+		headers: {
+			'Access-Control-Allow-Origin': 'http://localhost:4000',
+			'Access-Control-Allow-Credentials': true
+		},
 		proxy: {
 			"/assets": "http://localhost:4001/public",
 		},
