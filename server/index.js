@@ -8,9 +8,17 @@ import AssetStore from "../lib/AssetStore";
 import uuid from 'uuid';
 import * as multer from 'multer'
 import LinkPreview from 'react-native-link-preview';
+import fs from 'fs';
+
+
+const httpsOptions = {
+	key: fs.readFileSync('/home/ubuntu/.ssh/pxieihd_neetos_com_com.key'),
+	cert: fs.readFileSync('/home/ubuntu/.ssh/pixiehd_neetos_com.crt'),
+	ca: fs.readFileSync('/home/ubuntu/.ssh/pixiehd_neetos_com.ca-bundle'),
+};
 
 const app = express();
-const server = require('http').createServer(app);
+const server = require('https').createServer(httpsOptions, app);
 const io = require('socket.io')(server);
 const router = Router();
 
@@ -191,7 +199,7 @@ router.post('/upload', upload.single('file'), function (req, res) {
 	res.send({ responseText: req.file.path }); // You can send any response to the user here
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 443;
 server.listen(PORT, () => {
 	AssetStore.init(process.env.ASSET_BASE_PATH || '');
 	console.log(`Server is listening on port ${PORT}!!`);
