@@ -10,15 +10,21 @@ import * as multer from 'multer'
 import LinkPreview from 'react-native-link-preview';
 import fs from 'fs';
 
-
-const httpsOptions = {
-	key: fs.readFileSync('/home/ubuntu/.ssh/pxieihd_neetos_com_com.key'),
-	cert: fs.readFileSync('/home/ubuntu/.ssh/pixiehd_neetos_com.crt'),
-	ca: fs.readFileSync('/home/ubuntu/.ssh/pixiehd_neetos_com.ca-bundle'),
-};
-
+let server;
 const app = express();
-const server = require('https').createServer(httpsOptions, app);
+
+if (process.env.NODE_ENV === 'production') {
+	const sslBasePath = process.env.SSL_BASE_PATH || '/home/ubuntu/.ssh';
+	const httpsOptions = {
+		key: fs.readFileSync(`${sslBasePath}/pxieihd_neetos_com_com.key`),
+		cert: fs.readFileSync(`${sslBasePath}/pixiehd_neetos_com.crt`),
+		ca: fs.readFileSync(`${sslBasePath}/pixiehd_neetos_com.ca-bundle`),
+	};
+	server = require('https').createServer(httpsOptions, app);
+} else {
+	server = require('http').createServer(app);
+}
+
 const io = require('socket.io')(server);
 const router = Router();
 
@@ -166,6 +172,16 @@ io.on('connection', (socket) => {
 		wsClients[roomName].forEach(s => {
 			if (s.id !== socket.id) {
 				s.emit('canvas:clear');
+			}
+		})
+	});
+
+	socket.on('canvas:object:delete', (data) => {
+		const { roomName } = socket;
+
+		wsClients[roomName].forEach(s => {
+			if (s.id !== socket.id) {
+				s.emit('canvas:object:delete', data);
 			}
 		})
 	});

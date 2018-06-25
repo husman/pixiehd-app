@@ -6,7 +6,7 @@
   "scripts": {
     "watch:server": "webpack --watch --watch-aggregate-timeout 1000 --display-error-details true --progress --config webpack.server.config.js",
     "watch:client": "webpack-dev-server --hot --inline --progress --watch --config webpack.client.config.js",
-    "watch:node": "ASSET_BASE_PATH=http://localhost:4001 nodemon --delay 1 --verbose --watch ./dist/server ./dist/server/index.js",
+    "watch:node": "PORT=4000 ASSET_BASE_PATH=http://localhost:4001 nodemon --delay 1 --verbose --watch ./dist/server ./dist/server/index.js",
     "start:dev": "npm-run-all -p watch:server watch:node watch:client",
     "build:server": "webpack --progress --config webpack.server.config.js",
     "build:client": "webpack --progress --config webpack.client.config.prod.js",

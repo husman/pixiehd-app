@@ -86,6 +86,41 @@ class DrawArea extends React.Component {
 		this._canvas.renderAll();
 	};
 
+	onKeyPress = (event) => {
+		if (
+			event.target
+			&& event.target.type !== 'text'
+			&& event.target.type !== 'textarea'
+		) {
+			const key = event.key;
+
+			if (key !== 'Backspace') {
+				return;
+			}
+
+			const selection = this._canvas.getActiveObject();
+			const selectionGroup = this._canvas.getActiveGroup();
+			const ids = [];
+
+			if (selection) {
+				this._canvas.remove(selection);
+				ids.push(selection.id);
+			} else if (selectionGroup) {
+				const objectsInGroup = selectionGroup.getObjects();
+				this._canvas.discardActiveGroup();
+
+				objectsInGroup.forEach((object) => {
+					ids.push(object.id);
+					this._canvas.remove(object);
+				});
+			}
+
+			SocketClient.emit('canvas:object:delete', {
+				ids,
+			});
+		}
+	};
+
 	initialize = (canvas) => {
 		if (!canvas) {
 			return;
@@ -96,6 +131,8 @@ class DrawArea extends React.Component {
 		if (this.props.onInit) {
 			this.props.onInit(this._canvas);
 		}
+
+		document.onkeydown = this.onKeyPress;
 
 		this._canvas.on('path:created', (e) => {
 			e.path.id = new Date().getTime();
@@ -180,6 +217,11 @@ class DrawArea extends React.Component {
 
 		SocketClient.on('canvas:clear', () => {
 			this._canvas.clear();
+		});
+
+		SocketClient.on('canvas:object:delete', ({ ids }) => {
+			const elements = this._canvas.getObjects().filter(obj => ids.indexOf(obj.id) !== -1);
+			elements.forEach((e) => this._canvas.remove(e));
 		});
 	};
 
