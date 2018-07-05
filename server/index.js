@@ -57,6 +57,7 @@ router.get('/', async (req, res) => {
 
 	const roomName = req.query.r;
 	const fullName = req.query.name;
+	const isObserver = req.query.o === '1';
 	console.log('fullName', fullName);
 	const userId = Number(req.query.uid) || uuid.v4();
 	let sessionId;
@@ -101,6 +102,8 @@ router.get('/', async (req, res) => {
 				userId,
 				initials: fullName ? (fullName.match(/\b\w/g)).join('') : makeInitials(),
 				fullName,
+				isObserver,
+				publishAudio: !isObserver,
 			},
 		},
 		assetBasePath: process.env.ASSET_BASE_PATH || '',

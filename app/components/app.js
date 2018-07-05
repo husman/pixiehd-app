@@ -21,10 +21,14 @@ class App extends React.Component {
 	constructor(...props) {
 		super(...props);
 
+		const {
+			publishAudio,
+		} = this.props;
+
 		this.state = {
 			error: null,
 			connection: 'Connecting',
-			publishAudio: true,
+			publishAudio,
 			publishVideo: false,
 			streams: [],
 			isColorPickerVisible: false,
@@ -214,7 +218,8 @@ class App extends React.Component {
 	render() {
 		const { apiKey, sessionId, token } = this.props.credentials;
 		const {
-			fullName
+			fullName,
+			isObserver,
 		} = this.props;
 		const {
 			publishAudio,
@@ -354,19 +359,22 @@ class App extends React.Component {
 									<label htmlFor="tab-files">FILES</label>
 
 									<section id="tab-video-content" className="tab-content">
-										<OTPublisher
-											properties={{
-												publishAudio,
-												publishVideo,
-												style: {
-													buttonDisplayMode: 'off',
-												},
-												name: fullName,
-												...videoSource,
-											}}
-											session={this.sessionHelper.session}
-											eventHandlers={this.publisherEventHandlers}
-										/>
+										{(!isObserver || (isObserver && (publishAudio || publishVideo))) ?
+											<OTPublisher
+												properties={{
+													publishAudio,
+													publishVideo,
+													style: {
+														buttonDisplayMode: 'off',
+													},
+													name: fullName,
+													...videoSource,
+												}}
+												session={this.sessionHelper.session}
+												eventHandlers={this.publisherEventHandlers}
+											/>
+											: null
+										}
 
 										{this.state.streams.map(stream => {
 											return (
@@ -407,11 +415,15 @@ function mapStateToProps(state) {
 		user: {
 			fullName,
 			initials,
+			isObserver,
+			publishAudio,
 		},
 	} = state;
 
 	return {
 		fullName: fullName || initials,
+		isObserver,
+		publishAudio,
 	};
 }
 
