@@ -13,7 +13,7 @@ import fs from 'fs';
 let server;
 const app = express();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !process.env.HEROKU) {
 	const sslBasePath = process.env.SSL_BASE_PATH || '/home/ubuntu/.ssh';
 	const httpsOptions = {
 		key: fs.readFileSync(`${sslBasePath}/pxieihd_neetos_com_com.key`),
