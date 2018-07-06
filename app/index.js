@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../public/sass/liveclassroom.scss';
-import '@opentok/client';
+import '../thirdparty/opentok';
 import App from './components/app';
 import AssetStore from '../lib/AssetStore';
 import SocketClient from '../lib/SocketClient';

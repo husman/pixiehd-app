@@ -30,6 +30,7 @@ class App extends React.Component {
 			connection: 'Connecting',
 			publishAudio,
 			publishVideo: false,
+			publishScreen: false,
 			streams: [],
 			isColorPickerVisible: false,
 		};
@@ -68,6 +69,9 @@ class App extends React.Component {
 		};
 
 		this.subscriberEventHandlers = {
+			streamCreated: () => {
+				console.log('Publisher stream created');
+			},
 			videoEnabled: () => {
 				console.log('Subscriber video enabled');
 			},
@@ -90,29 +94,38 @@ class App extends React.Component {
 			token: token,
 			onStreamsUpdated: streams => {
 				this.setState({ streams });
-			}
+			},
+			onStreamCreated: (stream) => {
+        const props = {
+          insertDefaultUI: false,
+        };
+
+        console.log('=====onStreamCreated====');
+
+        if (stream.videoType === 'screen') {
+          this.screenShareSubscriber = this.sessionHelper.session.subscribe(stream, null, props);
+          this.screenShareSubscriber.on("screenShareStream", this.onScreenShareStream);
+        }
+
+      },
+      onStreamDestroyed: (stream) => {
+        console.log('=====onStreamDestroyed====');
+
+        if (stream.videoType === 'screen' && this.screenShareSubscriber) {
+          this.sessionHelper.session.unsubscribe(this.screenShareSubscriber);
+
+          this.setState({
+            screenShare: {},
+          });
+
+          this.screenShareStream = null;
+          this.screenShareSubscriber = null;
+        }
+      },
 		});
 
 		const eID = 'gmccchpgcgehaicldjndbihabgcdbnie';
-		console.log('registering extension', eID);
 		OT.registerScreenSharingExtension('chrome', eID, 2);
-		console.log('registered extension', eID);
-
-		OT.checkScreenSharingCapability(function (response) {
-			if (!response.supported || response.extensionRegistered === false) {
-				alert('This browser does not support screen sharing.');
-			} else if (response.extensionInstalled === false) {
-				alert('Please install the screen sharing extension and load your app over https.');
-			} else {
-				// Screen sharing is available. Publish the screen.
-				var screenSharingPublisher = OT.initPublisher('screen-preview', { videoSource: 'screen' });
-				session.publish(screenSharingPublisher, function (error) {
-					if (error) {
-						alert('Could not share the screen: ' + error.message);
-					}
-				});
-			}
-		});
 	}
 
 	componentWillUnmount() {
@@ -141,6 +154,10 @@ class App extends React.Component {
 
 	toggleVideo = () => {
 		this.setState({ publishVideo: !this.state.publishVideo });
+	};
+
+	toggleScreenSharing = () => {
+		this.setState({ publishScreen: !this.state.publishScreen });
 	};
 
 	toggleMicrophone = () => {
@@ -236,6 +253,30 @@ class App extends React.Component {
 		});
 	};
 
+  onScreenShareStream = ({ webRTCStream, OpentokStream }) => {
+    this.setState({
+      screenShare: {
+        webRTCStream: webRTCStream.clone(),
+        OpentokStream: OpentokStream,
+      },
+    });
+	};
+
+  initScreenShare = (video) => {
+    const {
+      screenShare: {
+        webRTCStream,
+      } = {}
+    } = this.state;
+
+    if (video && webRTCStream) {
+      console.log('Updating video srcObject', video);
+      console.log('Updating video srcObject', webRTCStream);
+      video.srcObject = webRTCStream;
+      video.play();
+    }
+  };
+
 	render() {
 		const { apiKey, sessionId, token } = this.props.credentials;
 		const {
@@ -245,11 +286,15 @@ class App extends React.Component {
 		const {
 			publishAudio,
 			publishVideo,
+			publishScreen,
 			tool = Tools.Pencil,
 			activePanel = 'tab-video',
 			isColorPickerVisible,
 			color,
 			hexColor,
+      screenShare: {
+        webRTCStream: screenShareStream,
+      } = {}
 		} = this.state || {};
 
 		const styles = {
@@ -266,7 +311,7 @@ class App extends React.Component {
 			},
 		};
 
-		const videoSource = !publishVideo ? { videoSource: null } : { videoSource: 'screen' };
+		const videoSource = !publishVideo ? { videoSource: null } : {};
 
 		return (
 			<MuiThemeProvider>
@@ -343,9 +388,22 @@ class App extends React.Component {
 										onClick={this.toggleVideo}
 									/>
 								</div>
+								<div className="margin-top-small">
+									<ToolItem
+										disabled={!!screenShareStream}
+										src={AssetStore.get(`assets/images/tools/screenshare-${publishScreen ? 'on' : 'off'}.png`)}
+										className="tool-item--video"
+										onClick={this.toggleScreenSharing}
+									/>
+								</div>
 							</div>
 						</div>
-						<div className="canvas-wrap">
+
+
+            {screenShareStream ? <video autoPlay className="screen-share-video" ref={this.initScreenShare}/> : null}
+
+
+            <div className="canvas-wrap">
 							<Canvas
 								session={this._session}
 								tool={tool}
@@ -396,8 +454,38 @@ class App extends React.Component {
 											/>
 											: null
 										}
+										{publishScreen ?
+											<OTPublisher
+												properties={{
+													publishAudio: false,
+													publishVideo: true,
+													videoSource: 'screen',
+													insertDefaultUI: false,
+												}}
+												session={this.sessionHelper.session}
+												eventHandlers={this.publisherEventHandlers}
+											/>
+											: null
+										}
 
 										{this.state.streams.map(stream => {
+											if (stream.videoType === 'screen') {
+												return null;
+												return (
+													<OTSubscriber
+														key={stream.id}
+														session={this.sessionHelper.session}
+														stream={stream}
+														properties={{
+															insertDefaultUI: false,
+														}}
+														eventHandlers={{
+															screenShareStream: this.onScreenShareStream
+														}}
+													/>
+												);
+											}
+
 											return (
 												<OTSubscriber
 													key={stream.id}
