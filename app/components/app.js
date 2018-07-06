@@ -92,6 +92,27 @@ class App extends React.Component {
 				this.setState({ streams });
 			}
 		});
+
+		const eID = 'gmccchpgcgehaicldjndbihabgcdbnie';
+		console.log('registering extension', eID);
+		OT.registerScreenSharingExtension('chrome', eID, 2);
+		console.log('registered extension', eID);
+
+		OT.checkScreenSharingCapability(function (response) {
+			if (!response.supported || response.extensionRegistered === false) {
+				alert('This browser does not support screen sharing.');
+			} else if (response.extensionInstalled === false) {
+				alert('Please install the screen sharing extension and load your app over https.');
+			} else {
+				// Screen sharing is available. Publish the screen.
+				var screenSharingPublisher = OT.initPublisher('screen-preview', { videoSource: 'screen' });
+				session.publish(screenSharingPublisher, function (error) {
+					if (error) {
+						alert('Could not share the screen: ' + error.message);
+					}
+				});
+			}
+		});
 	}
 
 	componentWillUnmount() {
@@ -245,7 +266,7 @@ class App extends React.Component {
 			},
 		};
 
-		const videoSource = !publishVideo ? { videoSource: null } : {};
+		const videoSource = !publishVideo ? { videoSource: null } : { videoSource: 'screen' };
 
 		return (
 			<MuiThemeProvider>
