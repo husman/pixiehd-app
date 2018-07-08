@@ -434,23 +434,16 @@ class App extends React.Component {
                           src={AssetStore.get(`assets/images/tools/screenshare-${publishScreen ? 'on' : 'off'}.png`)}
                           className="tool-item--video"
                           onClick={this.toggleScreenSharing}
-                      /> : (isChrome ?
-                              <ToolItem
-                                  src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
-                                  className="tool-item--video"
-                                  onClick={this.installScreenShareExtension}
-                              />
-                              :
-                              <a
-                                  href="https://chrome.google.com/webstore/detail/pixiehd-screen-sharing/djghbegjnagobmjmhknoappcogmdokhl"
-                                  target="_blank"
-                              >
-                                <ToolItem
-                                    src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
-                                    className="tool-item--video"
-                                />
-                              </a>
-                      )
+                      /> :
+                      <a
+                          href="https://chrome.google.com/webstore/detail/pixiehd-screen-sharing/djghbegjnagobmjmhknoappcogmdokhl"
+                          target="_blank"
+                      >
+                        <ToolItem
+                            src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
+                            className="tool-item--video"
+                        />
+                      </a>
                   }
 								</div>
 							</div>
