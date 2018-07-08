@@ -19,6 +19,7 @@ export default class HTML extends React.Component {
 			<head>
 				<title>CFA - Live Classroom</title>
 				<link rel="stylesheet" type="text/css" href={`${assetBasePath}/dist/styles.css`}/>
+        <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/djghbegjnagobmjmhknoappcogmdokhl"/>
 			</head>
 			<body>
 			<div id="app">

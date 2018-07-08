@@ -100,8 +100,6 @@ class App extends React.Component {
           insertDefaultUI: false,
         };
 
-        console.log('=====onStreamCreated====');
-
         if (stream.videoType === 'screen') {
           this.screenShareSubscriber = this.sessionHelper.session.subscribe(stream, null, props);
           this.screenShareSubscriber.on("screenShareStream", this.onScreenShareStream);
@@ -109,8 +107,6 @@ class App extends React.Component {
 
       },
       onStreamDestroyed: (stream) => {
-        console.log('=====onStreamDestroyed====');
-
         if (stream.videoType === 'screen' && this.screenShareSubscriber) {
           this.sessionHelper.session.unsubscribe(this.screenShareSubscriber);
 
@@ -124,8 +120,24 @@ class App extends React.Component {
       },
 		});
 
-		const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
-		OT.registerScreenSharingExtension('chrome', eID, 2);
+    OT.checkScreenSharingCapability((response) => {
+      if (!response.supported || response.extensionRegistered === false) {
+        this.setState({
+          isScreenShareSupported: false,
+        });
+      } else if (response.extensionInstalled === false) {
+        this.setState({
+          isScreenShareExtensionInstalled: false,
+        });
+      }
+    });
+
+    this.setState({
+      isChrome: chrome && chrome.webstore !== undefined,
+    });
+
+    const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
+    OT.registerScreenSharingExtension('chrome', eID, 2);
 	}
 
 	componentWillUnmount() {
@@ -262,6 +274,20 @@ class App extends React.Component {
     });
 	};
 
+  onScreenShareExtensionInstallSuccess = () => {
+  	this.setState({
+      isScreenShareExtensionInstalled: true,
+	  });
+  };
+
+  onScreenShareExtensionInstallFailure = () => {
+    alert('The browser extension could not be installed. Please contact the admin.');
+  };
+
+  installScreenShareExtension = () => {
+    chrome.webstore.install(null, this.onScreenShareExtensionInstallSuccess, this.onScreenShareExtensionInstallFailure);
+  };
+
   initScreenShare = (video) => {
     const {
       screenShare: {
@@ -270,8 +296,6 @@ class App extends React.Component {
     } = this.state;
 
     if (video && webRTCStream) {
-      console.log('Updating video srcObject', video);
-      console.log('Updating video srcObject', webRTCStream);
       video.srcObject = webRTCStream;
       video.play();
     }
@@ -294,7 +318,10 @@ class App extends React.Component {
 			hexColor,
       screenShare: {
         webRTCStream: screenShareStream,
-      } = {}
+      } = {},
+      isScreenShareSupported,
+      isScreenShareExtensionInstalled,
+      isChrome,
 		} = this.state || {};
 
 		const styles = {
@@ -389,18 +416,36 @@ class App extends React.Component {
 									/>
 								</div>
 								<div className="margin-top-small">
-									<ToolItem
-										disabled={!!screenShareStream}
-										src={AssetStore.get(`assets/images/tools/screenshare-${publishScreen ? 'on' : 'off'}.png`)}
-										className="tool-item--video"
-										onClick={this.toggleScreenSharing}
-									/>
+                  {isScreenShareExtensionInstalled ?
+                      <ToolItem
+                          disabled={!isScreenShareSupported || !!screenShareStream}
+                          src={AssetStore.get(`assets/images/tools/screenshare-${publishScreen ? 'on' : 'off'}.png`)}
+                          className="tool-item--video"
+                          onClick={this.toggleScreenSharing}
+                      /> :
+                      (isChrome ?
+                              <ToolItem
+                                  src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
+                                  className="tool-item--video"
+                                  onClick={this.installScreenShareExtension}
+                              /> :
+                              <a
+                                  href="https://chrome.google.com/webstore/detail/pixiehd-screen-sharing/djghbegjnagobmjmhknoappcogmdokhl"
+                                  target="_blank"
+                              >
+                                <ToolItem
+                                    src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
+                                    className="tool-item--video"
+                                />
+                              </a>
+                      )
+                  }
 								</div>
 							</div>
 						</div>
 
 
-            {screenShareStream ? <video autoPlay className="screen-share-video" ref={this.initScreenShare}/> : null}
+            {isScreenShareSupported && screenShareStream ? <video autoPlay className="screen-share-video" ref={this.initScreenShare}/> : null}
 
 
             <div className="canvas-wrap">

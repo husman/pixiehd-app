@@ -9,14 +9,14 @@ export default class ToolItem extends React.Component {
 		const { disabled, src, onClick, active, className } = this.props;
 		const props = {};
 
-		if (!disabled) {
+		if (!disabled && onClick) {
 			props.onClick = onClick;
 		}
 
 		return (
 			<div
 				className={`tool-item ${active ? 'active' : ''} ${className ? className : ''} ${disabled ? 'disabled' : ''}`}
-				onClick={onClick}
+        {...props}
 			>
 				<img className='tool-item__image' src={src}/>
 			</div>

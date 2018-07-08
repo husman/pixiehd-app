@@ -218,6 +218,10 @@ router.post('/upload', upload.single('file'), function (req, res) {
 	res.send({ responseText: req.file.path }); // You can send any response to the user here
 });
 
+router.get('/google219a982336b29bda.html', function (req, res) {
+	res.send('google-site-verification: google219a982336b29bda.html');
+});
+
 const PORT = process.env.PORT || 443;
 server.listen(PORT, () => {
 	AssetStore.init(process.env.ASSET_BASE_PATH || '');
