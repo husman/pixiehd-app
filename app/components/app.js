@@ -124,7 +124,7 @@ class App extends React.Component {
       },
 		});
 
-		const eID = 'gmccchpgcgehaicldjndbihabgcdbnie';
+		const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
 		OT.registerScreenSharingExtension('chrome', eID, 2);
 	}
 
