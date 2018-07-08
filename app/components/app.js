@@ -120,24 +120,36 @@ class App extends React.Component {
       },
 		});
 
-    OT.checkScreenSharingCapability((response) => {
-      if (!response.supported || response.extensionRegistered === false) {
-        this.setState({
-          isScreenShareSupported: false,
-        });
-      } else if (response.extensionInstalled === false) {
-        this.setState({
-          isScreenShareExtensionInstalled: false,
-        });
-      }
-    });
-
     this.setState({
       isChrome: chrome && chrome.webstore !== undefined,
     });
 
     const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
     OT.registerScreenSharingExtension('chrome', eID, 2);
+
+    OT.checkScreenSharingCapability((response) => {
+      this.setState({
+        isScreenShareSupported: response.supported && response.extensionRegistered !== false,
+        isScreenShareExtensionInstalled: response.extensionInstalled !== false,
+      });
+    });
+
+    this.screenShareExtensionCheckInterval = setInterval(() => {
+    	const {
+        isScreenShareExtensionInstalled
+	    } = this.state;
+
+      if (isScreenShareExtensionInstalled) {
+        clearInterval(this.screenShareExtensionCheckInterval);
+      }
+
+      OT.checkScreenSharingCapability((response) => {
+        this.setState({
+          isScreenShareSupported: response.supported && response.extensionRegistered !== false,
+          isScreenShareExtensionInstalled: response.extensionInstalled !== false,
+        });
+      });
+    }, 3000);
 	}
 
 	componentWillUnmount() {
@@ -423,22 +435,15 @@ class App extends React.Component {
                           className="tool-item--video"
                           onClick={this.toggleScreenSharing}
                       /> :
-                      (isChrome ?
-                              <ToolItem
-                                  src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
-                                  className="tool-item--video"
-                                  onClick={this.installScreenShareExtension}
-                              /> :
-                              <a
-                                  href="https://chrome.google.com/webstore/detail/pixiehd-screen-sharing/djghbegjnagobmjmhknoappcogmdokhl"
-                                  target="_blank"
-                              >
-                                <ToolItem
-                                    src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
-                                    className="tool-item--video"
-                                />
-                              </a>
-                      )
+                      <a
+                          href="https://chrome.google.com/webstore/detail/pixiehd-screen-sharing/djghbegjnagobmjmhknoappcogmdokhl"
+                          target="_blank"
+                      >
+                        <ToolItem
+                            src={AssetStore.get(`assets/images/tools/screenshare-off.png`)}
+                            className="tool-item--video"
+                        />
+                      </a>
                   }
 								</div>
 							</div>
