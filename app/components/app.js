@@ -293,7 +293,7 @@ class App extends React.Component {
   };
 
   onScreenShareExtensionInstallFailure = () => {
-    alert('The browser extension could not be installed. Please contact the admin.');
+  	// Do nothing for now
   };
 
   installScreenShareExtension = () => {
