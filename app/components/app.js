@@ -13,6 +13,7 @@ import SocketClient from '../../lib/SocketClient';
 import uuid from 'uuid';
 import { SketchPicker } from 'react-color'
 import ColorPickerIcon from './ColorPickerIcon';
+import { detect } from 'detect-browser';
 
 class App extends React.Component {
 	_session = null;
@@ -118,11 +119,28 @@ class App extends React.Component {
           this.screenShareSubscriber = null;
         }
       },
-		});
-
-    this.setState({
-      isChrome: chrome && chrome.webstore !== undefined,
     });
+
+    const browser = detect();
+
+    switch (browser && browser.name) {
+      case 'chrome':
+        this.setState({
+          isChrome: true,
+        });
+        break;
+      case 'firefox':
+        this.setState({
+          isFirefox: true,
+        });
+        break;
+
+      case 'edge':
+        this.setState({
+          isEdge: true,
+        });
+        break;
+    }
 
     const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
     OT.registerScreenSharingExtension('chrome', eID, 2);
