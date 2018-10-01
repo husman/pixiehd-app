@@ -328,3 +328,10 @@ input:checked + label {
   left: 0;
   right: 0;
 }
+
+.canvas-wrap {
+  .ace_content {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+  }
+}

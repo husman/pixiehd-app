@@ -14,6 +14,11 @@ import uuid from 'uuid';
 import { SketchPicker } from 'react-color'
 import ColorPickerIcon from './ColorPickerIcon';
 import { detect } from 'detect-browser';
+import AceEditor from 'react-ace';
+import 'brace/mode/javascript';
+import 'brace/theme/monokai';
+import 'brace/ext/language_tools';
+import 'brace/ext/searchbox';
 
 class App extends React.Component {
 	_session = null;
@@ -34,6 +39,8 @@ class App extends React.Component {
 			publishScreen: false,
 			streams: [],
 			isColorPickerVisible: false,
+      isCodeEditorActive: false,
+      codeEditorValue: '',
 		};
 
 		this.sessionEventHandlers = {
@@ -81,6 +88,12 @@ class App extends React.Component {
 			},
 		};
 	}
+
+  onChange = (newValue) => {
+    this.setState({
+	    codeEditorValue: newValue,
+    });
+  };
 
 	stateChanged(props, currentState, nextState) {
 		return props.some(prop => currentState[prop] !== nextState[prop]);
@@ -142,7 +155,8 @@ class App extends React.Component {
         break;
     }
 
-    const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
+    // const eID = 'djghbegjnagobmjmhknoappcogmdokhl';
+    const eID = 'gmccchpgcgehaicldjndbihabgcdbnie';
     OT.registerScreenSharingExtension('chrome', eID, 2);
 
     OT.checkScreenSharingCapability((response) => {
@@ -331,6 +345,18 @@ class App extends React.Component {
     }
   };
 
+  onDisplayCodeEditor = () => {
+    this.setState({
+      isCodeEditorActive: true,
+    });
+  };
+
+  onDisplayCanvas = () => {
+    this.setState({
+      isCodeEditorActive: false,
+    });
+  };
+
 	render() {
 		const { apiKey, sessionId, token } = this.props.credentials;
 		const {
@@ -352,6 +378,7 @@ class App extends React.Component {
       isScreenShareSupported,
       isScreenShareExtensionInstalled,
       isChrome,
+      isCodeEditorActive,
 		} = this.state || {};
 
 		const styles = {
@@ -379,57 +406,64 @@ class App extends React.Component {
 								backgroundImage: `url("${AssetStore.get('assets/images/backgrounds/bg_topPanel.jpg')}")`
 							}}
 						>
-							<img src={AssetStore.get('assets/images/tools/cfa-logo-lc-alt.png')}/>
+              <div style={{
+              	padding: '10px',
+              }}>
+                <strong>PixieHD</strong> - Neetos llc
+              </div>
 						</header>
 					</div>
 					<div className="body-wrapper">
 						<div className="tools-panel-wrapper">
-							<div className="tools-panel margin-bottom-small">
-								<div className="margin-top-xsmall">
-									<ToolItem
-										src={AssetStore.get('assets/images/tools/pointer.png')}
-										onClick={this.onChangeTool.bind(this, Tools.Select)}
-										active={tool === Tools.Select}
-									/>
-								</div>
-								<div className="margin-top-small">
-									<ToolItem
-										src={AssetStore.get('assets/images/tools/ellipse.png')}
-										onClick={this.onChangeTool.bind(this, Tools.Circle)}
-										active={tool === Tools.Circle}
-									/>
-								</div>
-								<div className="margin-top-small">
-									<ToolItem
-										src={AssetStore.get('assets/images/tools/pencil.png')}
-										onClick={this.onChangeTool.bind(this, Tools.Pencil)}
-										active={tool === Tools.Pencil}
-									/>
-								</div>
-								<div className="margin-top-small">
-									<ToolItem
-										src={AssetStore.get('assets/images/tools/text.png')}
-										onClick={this.onChangeTool.bind(this, Tools.Text)}
-										active={tool === Tools.Text}
-									/>
-								</div>
-								<div className="margin-top-small">
-									<ColorPickerIcon
-										color={hexColor}
-										onClick={this.toggleColorPicker}
-									/>
-									{isColorPickerVisible ?
-										<div className="color-picker" onClick={this.onColorPickerContainerClicked}>
-											<SketchPicker
-												disableAlpha
-												color={color}
-												onChangeComplete={this.onColorPickerChanged}
-											/>
-										</div>
-										: null
-									}
-								</div>
-							</div>
+              {!isCodeEditorActive ?
+                  <div className="tools-panel margin-bottom-small">
+                    <div className="margin-top-xsmall">
+                      <ToolItem
+                          src={AssetStore.get('assets/images/tools/pointer.png')}
+                          onClick={this.onChangeTool.bind(this, Tools.Select)}
+                          active={tool === Tools.Select}
+                      />
+                    </div>
+                    <div className="margin-top-small">
+                      <ToolItem
+                          src={AssetStore.get('assets/images/tools/ellipse.png')}
+                          onClick={this.onChangeTool.bind(this, Tools.Circle)}
+                          active={tool === Tools.Circle}
+                      />
+                    </div>
+                    <div className="margin-top-small">
+                      <ToolItem
+                          src={AssetStore.get('assets/images/tools/pencil.png')}
+                          onClick={this.onChangeTool.bind(this, Tools.Pencil)}
+                          active={tool === Tools.Pencil}
+                      />
+                    </div>
+                    <div className="margin-top-small">
+                      <ToolItem
+                          src={AssetStore.get('assets/images/tools/text.png')}
+                          onClick={this.onChangeTool.bind(this, Tools.Text)}
+                          active={tool === Tools.Text}
+                      />
+                    </div>
+                    <div className="margin-top-small">
+                      <ColorPickerIcon
+                          color={hexColor}
+                          onClick={this.toggleColorPicker}
+                      />
+                      {isColorPickerVisible ?
+                          <div className="color-picker" onClick={this.onColorPickerContainerClicked}>
+                            <SketchPicker
+                                disableAlpha
+                                color={color}
+                                onChangeComplete={this.onColorPickerChanged}
+                            />
+                          </div>
+                          : null
+                      }
+                    </div>
+                  </div>
+									: null
+							}
 
 							<div className="tools-panel">
 								<div className="margin-top-xsmall">
@@ -471,20 +505,52 @@ class App extends React.Component {
                       )
                   }
 								</div>
+                <div className="margin-top-small">
+                  {isCodeEditorActive ?
+                      <ToolItem
+                          src={AssetStore.get(`assets/images/tools/canvas-icon.png`)}
+                          onClick={this.onDisplayCanvas}
+                      />
+                      :
+                      <ToolItem
+                          src={AssetStore.get(`assets/images/tools/code-editor-icon.png`)}
+                          onClick={this.onDisplayCodeEditor}
+                      />
+                  }
+                </div>
 							</div>
 						</div>
 
 
             {isScreenShareSupported && screenShareStream ? <video autoPlay className="screen-share-video" ref={this.initScreenShare}/> : null}
-
-
             <div className="canvas-wrap">
-							<Canvas
-								session={this._session}
-								tool={tool}
-								color={hexColor}
-								onInit={this.onCanvasInit}
-							/>
+              {isCodeEditorActive ?
+                  <AceEditor
+                      mode="javascript"
+                      theme="monokai"
+                      onChange={this.onChange}
+                      name="pixie-editor"
+                      editorProps={{
+                        $blockScrolling: Infinity,
+                      }}
+                      value={this.state.codeEditorValue}
+                      setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: true,
+                      }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                  /> :
+                  <Canvas
+                      session={this._session}
+                      tool={tool}
+                      color={hexColor}
+                      onInit={this.onCanvasInit}
+                  />
+              }
+
 						</div>
 						<div className="right-panel-wrapper">
 							<GridList
