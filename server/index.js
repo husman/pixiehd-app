@@ -111,7 +111,7 @@ router.get('/', async (req, res) => {
   };
 
   const html = renderToStaticMarkup(
-      <HTML {...data} />
+    <HTML {...data} />,
   );
 
   res.send(`<!doctype html>\n${html}`);
@@ -129,9 +129,14 @@ app.use(function (err, req, res, next) {
 });
 
 const wsClients = {};
+const wsClientsV2 = {};
 
 io.on('connection', (socket) => {
-  const { roomName } = socket.handshake.query;
+  const {
+    roomName,
+    firstName,
+    isMicEnabled,
+  } = socket.handshake.query;
   socket.roomName = roomName;
 
   console.log('new client connected to session:', roomName, socket.id);
@@ -142,12 +147,29 @@ io.on('connection', (socket) => {
     wsClients[roomName].push(socket);
   }
 
+  if (!wsClientsV2[roomName]) {
+    wsClientsV2[roomName] = [{
+      socket,
+      firstName,
+      isMicEnabled: isMicEnabled === 'true',
+    }];
+  } else {
+    wsClientsV2[roomName].push({
+      socket,
+      firstName,
+      isMicEnabled: isMicEnabled === 'true',
+    });
+  }
+
   socket.on('disconnect', () => {
     console.log('user disconnected: ', socket.id);
     wsClients[roomName] = wsClients[roomName].filter((clientSocket) => {
       clientSocket.emit('user-leave', socket.id);
       return clientSocket !== socket;
     });
+
+    wsClientsV2[roomName] = wsClientsV2[roomName].filter(({ socket: clientSocket }) => clientSocket !== socket);
+    socket.broadcastToSession('user:left', socket.id);
   });
 
   socket.broadcastToPeers = (eventType, ...args) => {
@@ -161,6 +183,10 @@ io.on('connection', (socket) => {
 
   socket.listenAndBroadcastToPeers = (eventType) => {
     socket.on(eventType, (...args) => socket.broadcastToPeers(eventType, ...args));
+  };
+
+  socket.broadcastToSession = (eventType, ...args) => {
+    wsClients[roomName].forEach((clientSocket) => clientSocket.emit(eventType, ...args));
   };
 
   // broadcast the user's entrance to other peers
@@ -248,10 +274,25 @@ io.on('connection', (socket) => {
     });
   });
 
+  const users = wsClientsV2[roomName].map(({
+    socket: {
+      id,
+    },
+    firstName,
+    isMicEnabled,
+  }) => ({
+    id,
+    firstName,
+    isMicEnabled,
+  }));
+
+  socket.broadcastToSession('user:joined', socket.id, users);
+
   [
     'notebook:entry:add',
     'notebook:entry:change',
     'notebook:annotated',
+    'chat:new:message',
   ].map(socket.listenAndBroadcastToPeers);
 });
 
