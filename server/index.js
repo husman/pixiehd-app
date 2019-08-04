@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import bodyParser from 'body-parser';
 import { noCache } from 'helmet';
 import OpenTok from 'opentok';
 import React from 'react';
@@ -29,6 +30,7 @@ const io = require('socket.io')(server);
 const router = Router();
 
 
+app.use(bodyParser.json());
 app.use('/dist', express.static('./dist/app'));
 app.use('/assets', express.static('./public/assets'));
 app.use('/uploads', express.static('./uploads'));
@@ -294,6 +296,44 @@ io.on('connection', (socket) => {
     'notebook:annotated',
     'chat:new:message',
   ].map(socket.listenAndBroadcastToPeers);
+});
+
+router.post('/connect', async (req, res) => {
+  const apiKey = '46003032';
+  const secret = '135571e6887919f56e5b7d48b0f6e8e9adc47da3';
+  const opentok = new OpenTok(apiKey, secret);
+  const { meetingId } = req;
+
+  if (!roomToSessionIdDictionary[meetingId]) {
+    roomToSessionIdDictionary[meetingId] = await new Promise((resolve, reject) => {
+      opentok.createSession({ mediaMode: 'routed' }, function (err, session) {
+        if (err) {
+          console.log(err);
+
+          return reject({
+            error: 'createSession error:' + err,
+          });
+        }
+
+        // now that the room name has a session associated wit it, store it in memory
+        // IMPORTANT: Because this is stored in memory, restarting your server will reset these values
+        // if you want to store a room-to-session association in your production application
+        // you should use a more persistent storage for them
+        return resolve(session.sessionId);
+      });
+    });
+  }
+
+  const sessionId = roomToSessionIdDictionary['pixiedev123'];
+
+  // generate token
+  const token = opentok.generateToken(sessionId);
+
+  res.send({
+    apiKey,
+    sessionId,
+    token,
+  });
 });
 
 const upload = multer({ dest: 'uploads/' });
