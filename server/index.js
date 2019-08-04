@@ -324,7 +324,7 @@ router.post('/connect', async (req, res) => {
     });
   }
 
-  const sessionId = roomToSessionIdDictionary['pixiedev123'];
+  const sessionId = roomToSessionIdDictionary[meetingId];
 
   // generate token
   const token = opentok.generateToken(sessionId);
