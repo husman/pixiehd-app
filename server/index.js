@@ -53,6 +53,15 @@ router.get('/health', async (req, res) => {
   res.send('OK');
 });
 
+router.get('/login', async (req, res) => {
+  res.json({
+    id: 777,
+    email: 'husman@neetos.com',
+    firstName: 'Haleeq',
+    lastName: 'Usman',
+  });
+});
+
 router.get('/', async (req, res) => {
   const apiKey = '46003032';
   const secret = '135571e6887919f56e5b7d48b0f6e8e9adc47da3';
